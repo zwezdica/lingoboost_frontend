@@ -1,0 +1,312 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Quicksand", sans-serif;
+}
+
+:root {
+  /* Light Theme */
+  --primary: #ff9800;
+  --primary-light: linear-gradient(135deg, #ffe0a2, #fbc02d);
+  --primary-dark: #f57c00;
+  --accent: #e74c3c;
+  --success: #6c8b47;
+  --text: #5a4a3a;
+  --text-light: #7a5c40;
+  --bg: linear-gradient(135deg, #fef3c7, #fcd34d);
+  --bg-secondary: #fbc16b;
+  --border: #e8d5b5;
+  --white: #ffffff;
+  --shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+
+  /* Dark Theme */
+  --dark-primary: #8c6b4f;
+  --dark-primary-light: #3a2e21;
+  --dark-primary-dark: #5a4a3a;
+  --dark-secondary: #d49a6a;
+  --dark-accent: #b05a4a;
+  --dark-text: #f5e6d3;
+  --dark-text-light: #e8d5b5;
+  --dark-bg: linear-gradient(135deg, #2a2118, #3a2e21);
+  --dark-bg-secondary: #3a2e21;
+  --dark-border: #5a4a3a;
+}
+
+[data-theme="dark"] {
+  --primary: var(--dark-primary);
+  --primary-light: var(--dark-primary-light);
+  --primary-dark: var(--dark-primary-dark);
+  --secondary: var(--dark-secondary);
+  --accent: var(--dark-accent);
+  --text: var(--dark-text);
+  --text-light: var(--dark-text-light);
+  --bg: var(--dark-bg);
+  --bg-secondary: var(--dark-bg-secondary);
+  --border: var(--dark-border);
+}
+
+body {
+  background: var(--primary-light);
+  color: var(--text);
+  text-align: center;
+  padding: 0 20px;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.container {
+  max-width: 500px;
+  margin: 50px auto;
+  background: var(--bg-secondary);
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease-in-out;
+  border: 1px solid var(--border);
+}
+
+.container:hover {
+  transform: scale(1.02);
+}
+
+h1 {
+  color: var(--text);
+  font-size: 40px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.selector-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.selector-item {
+  display: flex;
+  flex-direction: column;
+  font-size: 1rem;
+  font-weight: bold;
+  gap: 5px;
+  width: 100%;
+  max-width: 300px;
+}
+
+select {
+  padding: 10px;
+  font-size: 16px;
+  text-align: center;
+  font-weight: bold;
+  border: 2px solid var(--primary);
+  border-radius: 6px;
+  background-color: var(--primary-dark);
+  color: var(--white);
+  cursor: pointer;
+  transition: border-color 0.3s;
+  width: 100%;
+}
+
+select:focus {
+  border-color: var(--primary-dark);
+  outline: none;
+}
+
+#start-button {
+  padding: 12px 20px;
+  font-size: 16px;
+  background-color: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+  width: 100%;
+  max-width: 300px;
+}
+
+#start-button:hover {
+  background-color: var(--primary-light);
+  color: var(--text-light);
+  transform: scale(1.05);
+}
+
+#bingo-table {
+  border-collapse: collapse;
+  margin: 30px auto;
+  background: var(--primary-light);
+  box-shadow: var(--shadow);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+#bingo-table td {
+  padding: 40px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--text);
+  background: var(--primary-light);
+  transition: background-color 0.3s;
+}
+
+#bingo-table td:hover {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+#score {
+  font-size: 24px;
+  font-weight: bold;
+  color: var(--text-light);
+  margin: 20px 0;
+}
+
+#modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-content {
+  background-color: var(--bg-secondary);
+  margin: 15% auto;
+  padding: 25px;
+  border: 2px solid var(--primary);
+  width: 80%;
+  max-width: 500px;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+}
+
+#close-modal {
+  float: right;
+  cursor: pointer;
+  font-size: 24px;
+  color: var(--primary);
+  transition: color 0.3s;
+}
+
+#close-modal:hover {
+  color: var(--primary-dark);
+}
+
+#back-to-home,
+#submit-translation {
+  padding: 12px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  margin: 20px;
+  background-color: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  transition: background 0.3s, transform 0.2s;
+}
+
+#back-to-home:hover,
+#submit-translation:hover {
+  background-color: var(--primary-dark);
+  transform: scale(1.05);
+}
+
+#back-to-home {
+  position: relative;
+  margin-top: 20px;
+  text-align: center;
+  width: auto;
+  padding: 12px 20px;
+  background-color: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+#back-to-home:hover {
+  background-color: var(--bg);
+  color: var(--text);
+  transform: scale(1.05);
+}
+
+#translation-modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+#translation-modal .modal-content {
+  background-color: var(--bg-secondary);
+  margin: 15% auto;
+  padding: 20px;
+  border: 2px solid var(--primary);
+  width: 80%;
+  max-width: 500px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+#translation-input {
+  width: 100%;
+  padding: 12px;
+  margin: 10px 0;
+  font-size: 16px;
+  border: 2px solid var(--primary);
+  border-radius: 6px;
+  background: var(--bg);
+  transition: border-color 0.3s;
+}
+
+#translation-input:focus {
+  border-color: var(--primary-dark);
+  outline: none;
+}
+
+.theme-switch {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+}
+
+.theme-switch input {
+  display: none;
+}
+
+.theme-switch label {
+  cursor: pointer;
+  padding: 8px;
+  background: var(--bg-secondary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
+}
+
+.theme-switch label:hover {
+  transform: scale(1.1);
+}

@@ -1,0 +1,260 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Quicksand", sans-serif;
+}
+
+:root {
+  /* Light Theme */
+  --primary: #ff9800;
+  --primary-light: linear-gradient(135deg, #ffe0a2, #fbc02d);
+  --primary-dark: #f57c00;
+  --secondary: #ed7802;
+  --accent: #e74c3c;
+  --text: #5a4a3a;
+  --text-dark: #2c3e50;
+  --bg: linear-gradient(135deg, #fef3c7, #fcd34d);
+  --bg-secondary: #fbc16b;
+  --border: #e8d5b5;
+  --white: #ffffff;
+  --shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+
+  /* Dark Theme */
+  --dark-primary: #8c6b4f;
+  --dark-primary-light: #3a2e21;
+  --dark-primary-dark: #5a4a3a;
+  --dark-secondary: #7a9c5a;
+  --dark-accent: #b05a4a;
+  --dark-text: #f5e6d3;
+  --dark-text-dark: #e8d5b5;
+  --dark-bg: linear-gradient(135deg, #2a2118, #3a2e21, #4a3328);
+  --dark-bg-secondary: rgba(139, 69, 19, 0.3);
+  --dark-border: #5a4a3a;
+}
+
+[data-theme="dark"] {
+  --primary: var(--dark-primary);
+  --primary-light: var(--dark-primary-light);
+  --primary-dark: var(--dark-primary-dark);
+  --secondary: var(--dark-secondary);
+  --accent: var(--dark-accent);
+  --text: var(--dark-text);
+  --text-dark: var(--dark-text-dark);
+  --bg: var(--dark-bg);
+  --bg-secondary: var(--dark-bg-secondary);
+  --border: var(--dark-border);
+}
+
+body {
+  background: var(--bg-secondary);
+  color: var(--text);
+  text-align: center;
+  padding: 10px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+}
+
+#app {
+  max-width: 900px;
+  width: 100%;
+  background: var(--primary-light);
+  padding: 10px 15px;
+  border-radius: 15px;
+  box-shadow: var(--shadow);
+  border: 1px solid var(--border);
+}
+
+h1 {
+  color: var(--text);
+  font-size: 36px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+#language-container {
+  margin-bottom: 30px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#language-selector {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: var(--text);
+  background: var(--bg);
+  border: 2px solid var(--primary-dark);
+  border-radius: 8px;
+}
+
+.hidden-word {
+  font-size: 32px;
+  letter-spacing: 12px;
+  font-weight: bold;
+  color: var(--text-dark);
+  text-transform: uppercase;
+  padding: 10px;
+  border-radius: 8px;
+  display: inline-block;
+  background: var(--bg-secondary);
+  border: 2px solid var(--primary);
+  margin-bottom: 20px;
+}
+
+#start-game {
+  padding: 12px 20px;
+  font-size: 18px;
+  cursor: pointer;
+  background-color: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: all 0.3s;
+  margin-top: 25px;
+}
+
+#start-game:hover {
+  background-color: var(--bg-secondary);
+  transform: translateY(-2px);
+  color: var(--text);
+}
+
+#messageBox {
+  margin-top: 20px;
+  font-size: 18px;
+  color: var(--text-dark);
+  font-weight: bold;
+  padding: 12px;
+  border-radius: 6px;
+  background-color: rgba(212, 154, 106, 0.7);
+  border: 1px solid var(--primary-dark);
+}
+
+#meaningBox {
+  font-weight: bold;
+  font-size: 18px;
+  color: var(--text);
+}
+
+#scoreboard {
+  font-size: 20px;
+  font-weight: bold;
+  color: var(--text);
+  margin-top: 20px;
+}
+
+#letterInput {
+  padding: 12px;
+  font-size: 15px;
+  width: 80px;
+  text-align: center;
+  margin: 15px auto;
+  border: 2px solid var(--primary);
+  border-radius: 8px;
+  outline: none;
+  background: var(--primary-light);
+  font-weight: bold;
+  color: var(--text);
+  text-transform: uppercase;
+  transition: all 0.3s;
+}
+
+#letterInput:focus {
+  border-color: var(--primary-dark);
+  box-shadow: 0 0 12px rgba(212, 154, 106, 0.5);
+  transform: scale(1.05);
+}
+
+button {
+  padding: 12px 20px;
+  font-size: 18px;
+  cursor: pointer;
+  background-color: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: all 0.3s;
+  margin: 10px 5px;
+}
+
+button:hover {
+  background-color: var(--bg);
+  color: var(--text);
+  transform: translateY(-2px);
+}
+
+#back-home-button {
+  background-color: var(--primary);
+}
+
+#back-home-button:hover {
+  background-color: var(--primary-light);
+  color: var(--text);
+}
+
+#next-button,
+#previous-button {
+  background-color: var(--secondary);
+}
+
+#next-button:hover,
+#previous-button:hover {
+  background-color: var(--primary-light);
+  color: var(--text);
+}
+
+#keyboard-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 20px;
+  justify-content: center;
+}
+
+.keyboard-key {
+  padding: 10px;
+  font-size: 20px;
+  cursor: pointer;
+  background-color: var(--primary-light);
+  color: var(--text);
+  border: 2px solid var(--secondary);
+  border-radius: 5px;
+  transition: all 0.2s;
+}
+
+.keyboard-key:hover {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+.theme-switch {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+}
+
+.theme-switch input {
+  display: none;
+}
+
+.theme-switch label {
+  cursor: pointer;
+  padding: 8px;
+  background: var(--primary-dark);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
+}
+
+.theme-switch label:hover {
+  transform: scale(1.1);
+}

@@ -1,0 +1,182 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Quicksand", sans-serif;
+}
+
+:root {
+  /* Light Theme */
+  --primary: #ff9800;
+  --primary-light: linear-gradient(135deg, #ffe0a2, #fbc02d);
+  --primary-dark: #f57c00;
+  --secondary: #8c6b4f;
+  --accent: #e74c3c;
+  --success: #6c8b47;
+  --text: #5a4a3a;
+  --text-light: #7a5c40;
+  --bg: #fff9f0;
+  --bg-secondary: #fbc16b;
+  --border: #e8d5b5;
+  --white: #ffffff;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  /* Dark Theme */
+  --dark-primary: #8c6b4f;
+  --dark-primary-light: #3a2e21;
+  --dark-primary-dark: #5a4a3a;
+  --dark-secondary: #d49a6a;
+  --dark-accent: #b05a4a;
+  --dark-success: #7a9c5a;
+  --dark-text: #f5e6d3;
+  --dark-text-light: #e8d5b5;
+  --dark-bg: #2a2118;
+  --dark-bg-secondary: #3a2e21;
+  --dark-border: #5a4a3a;
+}
+
+[data-theme="dark"] {
+  --primary: var(--dark-primary);
+  --primary-light: var(--dark-primary-light);
+  --primary-dark: var(--dark-primary-dark);
+  --secondary: var(--dark-secondary);
+  --accent: var(--dark-accent);
+  --success: var(--dark-success);
+  --text: var(--dark-text);
+  --text-light: var(--dark-text-light);
+  --bg: var(--dark-bg);
+  --bg-secondary: var(--dark-bg-secondary);
+  --border: var(--dark-border);
+}
+
+/* Dark mode toggle styles */
+.theme-switch {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 100;
+}
+
+.theme-switch input {
+  display: none;
+}
+
+.theme-switch label {
+  cursor: pointer;
+  padding: 8px;
+  background: var(--primary-dark);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
+}
+
+.theme-switch label:hover {
+  transform: scale(1.1);
+}
+
+body {
+  font-family: "Quicksand", sans-serif;
+  background: var(--primary-light);
+  color: var(--text);
+  transition: all 0.3s ease;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#login {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  padding: 30px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+}
+
+h1 {
+  color: var(--text-light);
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  align-items: center;
+}
+
+form label {
+  font-weight: bold;
+  color: var(--text-light);
+  align-self: flex-start;
+}
+
+input,
+select,
+textarea {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px;
+  border-radius: 6px;
+  transition: all 0.3s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  background: var(--primary-light);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 2px rgba(212, 154, 106, 0.3);
+}
+
+#loginUsername,
+#loginPassword {
+  background: var(--primary-light);
+}
+
+button {
+  background-color: var(--primary);
+  color: var(--white);
+  border: none;
+  padding: 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: all 0.3s;
+  width: 100%;
+}
+
+button:hover {
+  background-color: var(--bg-secondary);
+  color: var(--text);
+  transform: translateY(-2px);
+}
+
+p {
+  text-align: center;
+  margin-top: 10px;
+}
+
+p a {
+  color: var(--text-light);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+p a:hover {
+  color: var(--primary-dark);
+}

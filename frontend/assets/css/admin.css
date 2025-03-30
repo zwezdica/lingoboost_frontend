@@ -1,0 +1,346 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Quicksand", sans-serif;
+}
+
+:root {
+  /* Light Theme */
+  --primary: #ff9800;
+  --primary-light: linear-gradient(135deg, #ffe0a2, #fbc02d);
+  --primary-dark: #f57c00;
+  --secondary: #fbc16b;
+  --accent: #e74c3c;
+  --success: #6c8b47;
+  --text: #5a4a3a;
+  --text-light: #7a5c40;
+  --bg: linear-gradient(135deg, #fef3c7, #fcd34d);
+  --bg-secondary: #fbc16b;
+  --border: #e8d5b5;
+  --white: #ffffff;
+  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+  /* Dark Theme */
+  --dark-primary: #8c6b4f;
+  --dark-primary-light: #3a2e21;
+  --dark-primary-dark: #5a4a3a;
+  --dark-secondary: #d49a6a;
+  --dark-accent: #b05a4a;
+  --dark-success: #7a9c5a;
+  --dark-text: #f5e6d3;
+  --dark-text-light: #e8d5b5;
+  --dark-bg: #2a2118;
+  --dark-bg-secondary: #3a2e21;
+  --dark-border: #5a4a3a;
+}
+
+[data-theme="dark"] {
+  --primary: var(--dark-primary);
+  --primary-light: var(--dark-primary-light);
+  --primary-dark: var(--dark-primary-dark);
+  --secondary: var(--dark-secondary);
+  --accent: var(--dark-accent);
+  --success: var(--dark-success);
+  --text: var(--dark-text);
+  --text-light: var(--dark-text-light);
+  --bg: var(--dark-bg);
+  --bg-secondary: var(--dark-bg-secondary);
+  --border: var(--dark-border);
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(3px);
+}
+
+.modal.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-content {
+  background: var(--bg-secondary);
+  padding: 30px;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 450px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  transform: translateY(20px);
+  transition: all 0.4s ease;
+  border: 1px solid var(--border);
+}
+
+.modal.active .modal-content {
+  transform: translateY(0);
+}
+
+.modal-title {
+  font-size: 1.5rem;
+  margin: 0 0 15px 0;
+  color: var(--text);
+  font-weight: 600;
+}
+
+.modal-message {
+  margin: 0 0 25px 0;
+  color: var(--text-light);
+  line-height: 1.5;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+
+.modal-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  font-size: 0.95rem;
+}
+
+.modal-button-cancel {
+  background-color: var(--border);
+  color: var(--text);
+}
+
+.modal-button-cancel:hover {
+  background-color: var(--primary-dark);
+  color: var(--white);
+}
+
+.modal-button-confirm {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+.modal-button-confirm:hover {
+  background-color: var(--primary-dark);
+}
+
+.modal-button-danger {
+  background-color: var(--accent);
+  color: var(--white);
+}
+
+.modal-button-danger:hover {
+  background-color: #c0392b;
+}
+
+#modal-confirm,
+#modal-cancel {
+  background-color: var(--primary);
+  color: var(--white);
+}
+
+#modal-confirm.danger {
+  background-color: var(--accent);
+}
+
+#modal-cancel {
+  background-color: var(--border);
+  color: var(--text);
+}
+
+#modal-confirm:hover {
+  background-color: var(--primary-dark);
+}
+
+#modal-confirm.danger:hover {
+  background-color: #c0392b;
+}
+
+#modal-cancel:hover {
+  background-color: var(--primary-dark);
+  color: var(--white);
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--primary);
+  color: var(--white);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  background: var(--primary-dark);
+}
+
+body {
+  font-family: "Quicksand", sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+h1,
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#users,
+#logs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 30px;
+  width: 100%;
+}
+
+.user,
+.log {
+  flex: 1 1 calc(33.333% - 20px);
+  min-width: 250px;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  transition: transform 0.3s ease;
+}
+
+.user:hover,
+.log:hover {
+  transform: translateY(-5px);
+}
+
+#update-user,
+#delete-user {
+  max-width: 600px;
+  margin: 0 auto 40px;
+  padding: 20px;
+  background: var(--bg-secondary);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+}
+
+#delete-user {
+  border-top: 3px solid var(--accent);
+  margin-top: 30px;
+  padding-top: 30px;
+}
+
+input,
+select {
+  display: block;
+  width: 80%;
+  margin: 10px auto;
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--bg);
+}
+
+form button[type="submit"] {
+  display: block;
+  margin: 15px auto 0;
+  padding: 8px 20px;
+  background: var(--bg);
+  color: var(--text);
+  padding: 12px 20px;
+  border: none;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+#back-to-home-button {
+  display: block;
+  margin: 30px auto;
+  padding: 10px 25px;
+  background-color: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+#back-to-home-button:hover {
+  background-color: var(--primary-dark);
+}
+
+.delete-log-button {
+  display: block;
+  margin: 10px auto 0;
+  width: fit-content;
+  background: var(--bg);
+  color: var(--text);
+  padding: 12px 20px;
+  border: none;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.pagination-container {
+  margin: 30px 0;
+}
+
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+#next-log,
+#prev-log {
+  display: block;
+  margin: 15px auto 0;
+  padding: 8px 20px;
+  background: var(--bg);
+  color: var(--text);
+  padding: 12px 20px;
+  border: none;
+  font-size: 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}

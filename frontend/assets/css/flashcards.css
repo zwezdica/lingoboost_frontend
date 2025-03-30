@@ -1,0 +1,245 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Quicksand", sans-serif;
+}
+
+:root {
+  /* Light Theme */
+  --primary: #ff9800;
+  --primary-light: linear-gradient(135deg, #ffe0a2, #fbc02d);
+  --primary-dark: #f57c00;
+  --accent: #e74c3c;
+  --text: #5a4a3a;
+  --text-light: #7a5c40;
+  --bg: linear-gradient(135deg, #fef3c7, #fcd34d);
+  --bg-secondary: #fbc16b;
+  --border: #b85d03;
+  --white: #ffffff;
+  --shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+
+  /* Dark Theme */
+  --dark-primary: #8c6b4f;
+  --dark-primary-light: #b48c69;
+  --dark-primary-dark: #5a4a3a;
+  --dark-accent: #b05a4a;
+  --dark-text: #f5e6d3;
+  --dark-text-light: #e8d5b5;
+  --dark-bg: linear-gradient(135deg, #2a2118, #3a2e21);
+  --dark-bg-secondary: #3a2e21;
+  --dark-border: #5a4a3a;
+}
+
+[data-theme="dark"] {
+  --primary: var(--dark-primary);
+  --primary-light: var(--dark-primary-light);
+  --primary-dark: var(--dark-primary-dark);
+  --accent: var(--dark-accent);
+  --text: var(--dark-text);
+  --text-light: var(--dark-text-light);
+  --bg: var(--dark-bg);
+  --bg-secondary: var(--dark-bg-secondary);
+  --border: var(--dark-border);
+}
+
+body {
+  background: var(--bg-secondary);
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  transition: all 0.3s ease;
+}
+
+.flashcards {
+  background-color: var(--bg);
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: var(--shadow);
+  width: 90%;
+  max-width: 900px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+
+.back-btn {
+  text-decoration: none;
+  color: var(--white);
+  font-size: 1rem;
+  margin-bottom: 20px;
+  display: inline-block;
+  background: var(--primary-dark);
+  padding: 8px 16px;
+  border-radius: 6px;
+  transition: all 0.3s;
+}
+
+.back-btn:hover {
+  background-color: var(--primary-light);
+  color: var(--text);
+}
+
+label {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: var(--text-light);
+  display: block;
+  text-align: center;
+  margin: 10px auto 15px auto;
+}
+
+select {
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 6px;
+  border: 2px solid var(--primary-dark);
+  background: var(--primary-light);
+  color: var(--text);
+  display: block;
+  margin: 0 auto 20px auto;
+  max-width: 300px;
+  transition: all 0.3s;
+}
+
+select:focus {
+  border-color: var(--primary);
+  outline: none;
+}
+
+.flashcards {
+  background: var(--bg);
+}
+h2 {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  color: var(--text);
+  font-weight: bold;
+}
+
+.flashcard-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.flashcard {
+  width: 200px;
+  height: 100px;
+  background: var(--primary-light);
+  perspective: 1000px;
+}
+
+.flashcard-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transform: rotateY(0deg);
+  transition: transform 0.6s;
+}
+
+.flashcard.flipped .flashcard-inner {
+  transform: rotateY(180deg);
+}
+
+.flashcard-front,
+.flashcard-back {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backface-visibility: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: 2px solid var(--border);
+  border-radius: 6px;
+}
+
+.flashcard-front {
+  background-color: var(--primary-light);
+  color: var(--text);
+}
+
+.flashcard-back {
+  background-color: var(--primary-dark);
+  color: var(--white);
+  transform: rotateY(180deg);
+}
+
+#loading-message {
+  font-size: 1.2rem;
+  color: var(--white);
+  margin-top: 20px;
+  display: none;
+}
+
+.navigation-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+button {
+  background-color: var(--primary-dark);
+  color: var(--white);
+  border: none;
+  padding: 12px 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.3s;
+}
+
+button:hover {
+  background-color: var(--primary-light);
+  color: var(--text);
+  transform: scale(1.05);
+}
+
+button:disabled {
+  background-color: var(--border);
+  cursor: not-allowed;
+}
+
+.theme-switch {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.theme-switch input {
+  display: none;
+}
+
+.theme-switch label {
+  cursor: pointer;
+  padding: 10px;
+  background: var(--primary);
+  color: var(--white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  box-shadow: var(--shadow);
+  transition: all 0.3s;
+  font-size: 18px;
+}
+
+.theme-switch label:hover {
+  background: var(--primary-dark);
+  transform: scale(1.1);
+}
