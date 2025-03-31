@@ -59,6 +59,68 @@ function showConfirmationModal(options) {
   });
 }
 
+function showNotificationModal(options) {
+  return new Promise((resolve) => {
+    const modal = document.createElement("div");
+    modal.className = "modal";
+    modal.innerHTML = `
+      <div class="modal-content ${options.type || "info"}">
+        <h3 class="modal-title">${options.title}</h3>
+        <p class="modal-message">${options.message}</p>
+        <div class="modal-buttons">
+          <button id="modal-ok" class="modal-button modal-button-confirm">
+            ${options.okText || "OK"}
+          </button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+
+    setTimeout(() => modal.classList.add("active"), 10);
+
+    const okBtn = document.getElementById("modal-ok");
+
+    const cleanup = () => {
+      modal.classList.remove("active");
+      setTimeout(() => {
+        document.body.removeChild(modal);
+      }, 300);
+    };
+
+    okBtn.addEventListener("click", () => {
+      cleanup();
+      resolve(true);
+    });
+
+    if (options.autoClose) {
+      setTimeout(() => {
+        cleanup();
+        resolve(true);
+      }, options.autoClose);
+    }
+  });
+}
+
+// Wrapper funkcije za česte notifikacije
+function showMessage(message) {
+  return showNotificationModal({
+    title: "Success",
+    message: message,
+    type: "success",
+    okText: "OK",
+    autoClose: 3000,
+  });
+}
+
+function showError(message) {
+  return showNotificationModal({
+    title: "Error",
+    message: message,
+    type: "error",
+    okText: "OK",
+  });
+}
+
 function initializeAdminPanel() {
   document.body.innerHTML = `
     <div class="container">
@@ -150,7 +212,6 @@ async function fetchUsers(page = 1) {
 
     const data = await response.json();
 
-    // Prilagodba za backend odgovor
     const users = data.users || data.data || [];
     totalUsers = data.total || data.totalUsers || 0;
     const totalPages =
@@ -282,7 +343,7 @@ function renderLogs(logs) {
       });
 
       if (confirmed) {
-        deleteLog(logId);
+        await deleteLog(logId);
       }
     });
   });
@@ -332,11 +393,11 @@ async function deleteLog(logId) {
 
     if (!response.ok) throw new Error("Failed to delete log");
 
-    showMessage("Log deleted successfully");
+    await showMessage("Log deleted successfully");
     fetchLoginLogs(currentLogPage);
   } catch (error) {
     console.error("Error deleting log:", error);
-    showError("Failed to delete log");
+    await showError("Failed to delete log");
   }
 }
 
@@ -348,7 +409,7 @@ async function handleUpdateUser(e) {
   const role = document.getElementById("role").value;
 
   if (!userId || !username || !email) {
-    showError("All fields are required");
+    await showError("All fields are required");
     return;
   }
 
@@ -373,12 +434,12 @@ async function handleUpdateUser(e) {
 
     if (!response.ok) throw new Error("Failed to update user");
 
-    showMessage("User updated successfully");
+    await showMessage("User updated successfully");
     document.getElementById("update-form").reset();
     fetchUsers(currentUserPage);
   } catch (error) {
     console.error("Error updating user:", error);
-    showError("Failed to update user");
+    await showError("Failed to update user");
   }
 }
 
@@ -387,7 +448,7 @@ async function handleDeleteUser(e) {
   const userId = document.getElementById("deleteUserId").value.trim();
 
   if (!userId) {
-    showError("User ID is required");
+    await showError("User ID is required");
     return;
   }
 
@@ -409,27 +470,11 @@ async function handleDeleteUser(e) {
 
     if (!response.ok) throw new Error("Failed to delete user");
 
-    showMessage("User deleted successfully");
+    await showMessage("User deleted successfully");
     document.getElementById("delete-form").reset();
     fetchUsers(currentUserPage);
   } catch (error) {
     console.error("Error deleting user:", error);
-    showError("Failed to delete user");
+    await showError("Failed to delete user");
   }
-}
-
-function showMessage(message) {
-  const alert = document.createElement("div");
-  alert.className = "alert success";
-  alert.textContent = message;
-  document.body.prepend(alert);
-  setTimeout(() => alert.remove(), 3000);
-}
-
-function showError(message) {
-  const alert = document.createElement("div");
-  alert.className = "alert error";
-  alert.textContent = message;
-  document.body.prepend(alert);
-  setTimeout(() => alert.remove(), 3000);
 }
