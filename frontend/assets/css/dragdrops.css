@@ -215,3 +215,116 @@ button:hover {
 .theme-switch label:hover {
   transform: scale(1.1);
 }
+
+@media (max-width: 575.98px) {
+  body {
+    padding: 10px;
+  }
+
+  .logo h1 {
+    font-size: 28px;
+  }
+
+  .game-container {
+    padding: 20px;
+    width: 100%;
+  }
+
+  .game-container h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+
+  .term-row,
+  .translation-row {
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+
+  .word-card,
+  .icon-card {
+    width: 100%;
+    padding: 15px;
+    line-height: 1.5;
+    border-radius: 6px;
+    font-size: 16px;
+  }
+
+  button {
+    margin: 5px;
+    padding: 8px 15px;
+  }
+
+  #backToHome {
+    margin-top: 20px;
+    padding: 10px 20px;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .game-container {
+    padding: 30px;
+  }
+
+  .word-card,
+  .icon-card {
+    width: 160px;
+    padding: 15px 25px;
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .game-container {
+    padding: 35px;
+  }
+
+  .word-card,
+  .icon-card {
+    width: 180px;
+  }
+}
+
+@media (orientation: landscape) and (max-width: 991.98px) {
+  body {
+    padding: 15px;
+  }
+
+  .game-container {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .term-row,
+  .translation-row {
+    gap: 15px;
+  }
+
+  .word-card,
+  .icon-card {
+    padding: 15px;
+    width: 150px;
+  }
+}
+
+@media (max-height: 600px) {
+  .game-container {
+    padding: 20px;
+  }
+
+  .logo h1 {
+    font-size: 24px;
+  }
+
+  .game-container h1 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+
+  .word-card,
+  .icon-card {
+    padding: 10px;
+    font-size: 14px;
+  }
+}

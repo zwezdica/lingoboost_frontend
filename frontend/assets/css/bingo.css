@@ -6,7 +6,6 @@
 }
 
 :root {
-  /* Light Theme */
   --primary: #ff9800;
   --primary-light: linear-gradient(135deg, #ffe0a2, #fbc02d);
   --primary-dark: #f57c00;
@@ -20,7 +19,6 @@
   --white: #ffffff;
   --shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 
-  /* Dark Theme */
   --dark-primary: #8c6b4f;
   --dark-primary-light: #3a2e21;
   --dark-primary-dark: #5a4a3a;
@@ -309,4 +307,85 @@ select:focus {
 
 .theme-switch label:hover {
   transform: scale(1.1);
+}
+
+@media (max-width: 575.98px) {
+  body {
+    padding: 10px;
+  }
+
+  .container {
+    width: 100%;
+    padding: 20px;
+    margin: 20px auto;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+
+  #bingo-table td {
+    padding: 20px;
+    font-size: 18px;
+  }
+
+  .selector-item,
+  #start-button,
+  #back-to-home {
+    max-width: 100%;
+  }
+
+  .modal-content {
+    width: 95%;
+    margin: 10% auto;
+    padding: 15px;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .container {
+    width: 90%;
+  }
+
+  #bingo-table td {
+    padding: 25px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .container {
+    width: 80%;
+  }
+}
+
+@media (orientation: landscape) and (max-width: 991.98px) {
+  body {
+    padding: 10px;
+  }
+
+  .container {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  #bingo-table td {
+    padding: 15px;
+  }
+}
+
+@media (max-height: 600px) {
+  .container {
+    padding: 15px;
+    margin: 10px auto;
+  }
+
+  h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  #bingo-table td {
+    padding: 10px;
+    font-size: 16px;
+  }
 }

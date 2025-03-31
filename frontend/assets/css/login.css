@@ -6,7 +6,6 @@
 }
 
 :root {
-  /* Light Theme */
   --primary: #ff9800;
   --primary-light: linear-gradient(135deg, #ffe0a2, #fbc02d);
   --primary-dark: #f57c00;
@@ -21,7 +20,6 @@
   --white: #ffffff;
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 
-  /* Dark Theme */
   --dark-primary: #8c6b4f;
   --dark-primary-light: #3a2e21;
   --dark-primary-dark: #5a4a3a;
@@ -179,4 +177,79 @@ p a {
 
 p a:hover {
   color: var(--primary-dark);
+}
+
+@media (max-width: 575.98px) {
+  body {
+    padding: 15px;
+    align-items: flex-start;
+  }
+
+  #login {
+    width: 100%;
+    padding: 20px;
+    margin-top: 20px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+
+  form {
+    gap: 12px;
+  }
+
+  input,
+  select,
+  textarea {
+    padding: 8px;
+  }
+
+  button {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  #login {
+    padding: 25px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  #login {
+    padding: 30px;
+  }
+}
+
+@media (orientation: landscape) and (max-width: 991.98px) {
+  body {
+    padding: 10px;
+  }
+
+  #login {
+    max-height: 95vh;
+    overflow-y: auto;
+  }
+}
+
+@media (max-height: 600px) {
+  #login {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+  }
+
+  form {
+    gap: 8px;
+  }
+
+  button {
+    padding: 8px;
+  }
 }

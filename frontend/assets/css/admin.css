@@ -6,7 +6,6 @@
 }
 
 :root {
-  /* Light Theme */
   --primary: #ff9800;
   --primary-light: linear-gradient(135deg, #ffe0a2, #fbc02d);
   --primary-dark: #f57c00;
@@ -21,7 +20,6 @@
   --white: #ffffff;
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 
-  /* Dark Theme */
   --dark-primary: #8c6b4f;
   --dark-primary-light: #3a2e21;
   --dark-primary-dark: #5a4a3a;
@@ -47,6 +45,31 @@
   --bg: var(--dark-bg);
   --bg-secondary: var(--dark-bg-secondary);
   --border: var(--dark-border);
+}
+
+.theme-toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: var(--primary);
+  color: var(--white);
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 20px;
+  box-shadow: var(--shadow);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  background: var(--primary-dark);
 }
 
 .modal {
@@ -83,10 +106,6 @@
   border: 1px solid var(--border);
 }
 
-.modal.active .modal-content {
-  transform: translateY(0);
-}
-
 .modal-title {
   font-size: 1.5rem;
   margin: 0 0 15px 0;
@@ -116,16 +135,6 @@
   font-size: 0.95rem;
 }
 
-.modal-button-cancel {
-  background-color: var(--border);
-  color: var(--text);
-}
-
-.modal-button-cancel:hover {
-  background-color: var(--primary-dark);
-  color: var(--white);
-}
-
 .modal-button-confirm {
   background-color: var(--primary);
   color: var(--white);
@@ -144,57 +153,14 @@
   background-color: #c0392b;
 }
 
-#modal-confirm,
-#modal-cancel {
-  background-color: var(--primary);
-  color: var(--white);
-}
-
-#modal-confirm.danger {
-  background-color: var(--accent);
-}
-
-#modal-cancel {
+.modal-button-cancel {
   background-color: var(--border);
   color: var(--text);
 }
 
-#modal-confirm:hover {
-  background-color: var(--primary-dark);
-}
-
-#modal-confirm.danger:hover {
-  background-color: #c0392b;
-}
-
-#modal-cancel:hover {
+.modal-button-cancel:hover {
   background-color: var(--primary-dark);
   color: var(--white);
-}
-
-.theme-toggle {
-  position: fixed;
-  top: 20px;
-  right: 20px;
-  background: var(--primary);
-  color: var(--white);
-  border: none;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-size: 20px;
-  box-shadow: var(--shadow);
-  transition: all 0.3s ease;
-  z-index: 1000;
-}
-
-.theme-toggle:hover {
-  transform: scale(1.1);
-  background: var(--primary-dark);
 }
 
 body {
@@ -238,11 +204,45 @@ h2 {
   padding: 20px;
   box-shadow: var(--shadow);
   transition: transform 0.3s ease;
+  display: flex;
+  flex-direction: column;
 }
 
 .user:hover,
 .log:hover {
   transform: translateY(-5px);
+}
+
+button {
+  background: var(--primary);
+  color: var(--white);
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: block;
+  margin: 15px auto;
+  width: fit-content;
+  font-weight: bold;
+}
+
+button:hover {
+  background: var(--primary-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#update-form button[type="submit"],
+#delete-form button[type="submit"],
+#back-to-home-button {
+  margin: 20px auto;
+}
+
+.delete-log-button {
+  margin-top: 30px;
+  margin-bottom: 0;
 }
 
 #update-user,
@@ -272,53 +272,6 @@ select {
   background: var(--bg);
 }
 
-form button[type="submit"] {
-  display: block;
-  margin: 15px auto 0;
-  padding: 8px 20px;
-  background: var(--bg);
-  color: var(--text);
-  padding: 12px 20px;
-  border: none;
-  font-size: 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s;
-}
-
-#back-to-home-button {
-  display: block;
-  margin: 30px auto;
-  padding: 10px 25px;
-  background-color: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 16px;
-  transition: background-color 0.3s;
-}
-
-#back-to-home-button:hover {
-  background-color: var(--primary-dark);
-}
-
-.delete-log-button {
-  display: block;
-  margin: 10px auto 0;
-  width: fit-content;
-  background: var(--bg);
-  color: var(--text);
-  padding: 12px 20px;
-  border: none;
-  font-size: 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s;
-}
-
 .pagination-container {
   margin: 30px 0;
 }
@@ -329,18 +282,132 @@ form button[type="submit"] {
   gap: 15px;
 }
 
-#next-log,
-#prev-log {
-  display: block;
-  margin: 15px auto 0;
-  padding: 8px 20px;
-  background: var(--bg);
-  color: var(--text);
-  padding: 12px 20px;
-  border: none;
-  font-size: 16px;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s;
+@media (max-width: 575.98px) {
+  body {
+    padding: 15px;
+  }
+
+  .container {
+    padding: 15px;
+  }
+
+  h1,
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+
+  .user,
+  .log {
+    flex: 1 1 100%;
+    min-width: 100%;
+    padding: 15px;
+  }
+
+  #update-user,
+  #delete-user {
+    width: 100%;
+    padding: 15px;
+  }
+
+  input,
+  select {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .modal-content {
+    width: 95%;
+    padding: 20px;
+  }
+
+  .modal-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .modal-button {
+    width: 100%;
+  }
+
+  .delete-log-button {
+    margin-top: 20px;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .user,
+  .log {
+    flex: 1 1 calc(50% - 20px);
+  }
+
+  #update-user,
+  #delete-user {
+    width: 90%;
+  }
+
+  .modal-content {
+    width: 85%;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .user,
+  .log {
+    flex: 1 1 calc(33.333% - 20px);
+  }
+
+  #update-user,
+  #delete-user {
+    width: 80%;
+  }
+
+  .modal-content {
+    width: 70%;
+    max-width: 400px;
+  }
+}
+
+@media (min-width: 992px) {
+  @media (orientation: landscape) and (max-width: 991.98px) {
+    .container {
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .user,
+    .log {
+      min-height: 200px;
+    }
+
+    .modal-content {
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+  }
+
+  @media (max-height: 600px) {
+    body {
+      padding: 10px;
+    }
+
+    .container {
+      padding: 10px;
+    }
+
+    h1,
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    .user,
+    .log {
+      padding: 10px;
+    }
+
+    button {
+      padding: 8px 15px;
+      margin: 10px auto;
+    }
+  }
 }

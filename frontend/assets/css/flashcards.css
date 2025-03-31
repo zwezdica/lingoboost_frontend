@@ -6,7 +6,6 @@
 }
 
 :root {
-  /* Light Theme */
   --primary: #ff9800;
   --primary-light: linear-gradient(135deg, #ffe0a2, #fbc02d);
   --primary-dark: #f57c00;
@@ -19,7 +18,6 @@
   --white: #ffffff;
   --shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 
-  /* Dark Theme */
   --dark-primary: #8c6b4f;
   --dark-primary-light: #b48c69;
   --dark-primary-dark: #5a4a3a;
@@ -242,4 +240,117 @@ button:disabled {
 .theme-switch label:hover {
   background: var(--primary-dark);
   transform: scale(1.1);
+}
+
+@media (max-width: 575.98px) {
+  body {
+    height: auto;
+    min-height: 100vh;
+    padding: 15px;
+    align-items: flex-start;
+  }
+
+  .flashcards {
+    width: 100%;
+    padding: 15px;
+    margin-top: 20px;
+  }
+
+  h2 {
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+
+  .flashcard {
+    width: 150px;
+    height: 80px;
+  }
+
+  .flashcard-front,
+  .flashcard-back {
+    font-size: 1.1rem;
+  }
+
+  .navigation-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+  }
+
+  select {
+    max-width: 100%;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .flashcards {
+    width: 95%;
+    padding: 20px;
+  }
+
+  .flashcard {
+    width: 160px;
+    height: 90px;
+  }
+
+  .flashcard-front,
+  .flashcard-back {
+    font-size: 1.2rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .flashcards {
+    width: 90%;
+  }
+
+  .flashcard {
+    width: 180px;
+    height: 100px;
+  }
+}
+
+@media (orientation: landscape) and (max-width: 991.98px) {
+  body {
+    padding: 10px;
+  }
+
+  .flashcards {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .flashcard-container {
+    gap: 10px;
+  }
+
+  .flashcard {
+    width: 150px;
+    height: 80px;
+  }
+}
+
+@media (max-height: 600px) {
+  .flashcards {
+    padding: 15px;
+  }
+
+  h2 {
+    font-size: 1.3rem;
+    margin-bottom: 10px;
+  }
+
+  .flashcard {
+    width: 140px;
+    height: 70px;
+  }
+
+  .flashcard-front,
+  .flashcard-back {
+    font-size: 1rem;
+  }
 }

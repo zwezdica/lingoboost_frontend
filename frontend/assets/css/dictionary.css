@@ -6,7 +6,6 @@
 }
 
 :root {
-  /* Light Theme */
   --primary: #ff9800;
   --primary-light: linear-gradient(135deg, #ffe0a2, #fbc02d);
   --primary-dark: #f57c00;
@@ -21,7 +20,6 @@
   --white: #ffffff;
   --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 
-  /* Dark Theme */
   --dark-primary: #8c6b4f;
   --dark-primary-light: #3a2e21;
   --dark-primary-dark: #5a4a3a;
@@ -168,13 +166,9 @@ select {
   padding: 25px;
   border-radius: 10px;
   font-size: 18px;
+  font-weight: bold;
   background-color: var(--bg-secondary);
   box-shadow: var(--shadow);
-}
-
-.result-card h2 {
-  font-size: 26px;
-  font-weight: bold;
 }
 
 #backToHomeButton {
@@ -195,4 +189,136 @@ select {
 #backToHomeButton:hover {
   background-color: var(--primary-light);
   color: var(--text);
+}
+
+@media (max-width: 575.98px) {
+  body {
+    padding: 20px 15px;
+    font-size: 16px;
+  }
+
+  .container {
+    width: 100%;
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 24px;
+  }
+
+  .search-form {
+    gap: 15px;
+  }
+
+  input,
+  select {
+    padding: 12px 15px;
+    font-size: 16px;
+    margin-bottom: 15px;
+  }
+
+  #searchButton {
+    padding: 12px;
+    font-size: 16px;
+    width: 100%;
+  }
+
+  .result-card {
+    padding: 15px;
+    font-size: 16px;
+  }
+
+  .result-card h2 {
+    font-size: 20px;
+  }
+
+  #backToHomeButton {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  body {
+    padding: 25px;
+  }
+
+  .container {
+    width: 95%;
+    padding: 25px;
+  }
+
+  h1 {
+    font-size: 26px;
+  }
+
+  input,
+  select {
+    padding: 12px 16px;
+  }
+
+  #searchButton {
+    padding: 12px 18px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .container {
+    width: 90%;
+    padding: 30px;
+  }
+
+  h1 {
+    font-size: 28px;
+  }
+}
+
+@media (orientation: landscape) and (max-width: 991.98px) {
+  body {
+    padding: 15px;
+  }
+
+  .container {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .search-form {
+    gap: 15px;
+  }
+
+  input,
+  select {
+    padding: 10px 14px;
+  }
+
+  #searchButton {
+    padding: 10px 16px;
+  }
+}
+
+@media (max-height: 600px) {
+  body {
+    padding: 15px;
+  }
+
+  .container {
+    padding: 20px;
+  }
+
+  h1 {
+    margin-bottom: 10px;
+    font-size: 22px;
+  }
+
+  .search-form {
+    gap: 10px;
+  }
+
+  input,
+  select {
+    padding: 10px 12px;
+    margin-bottom: 10px;
+  }
 }

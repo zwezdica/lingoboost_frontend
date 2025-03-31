@@ -6,7 +6,6 @@
 }
 
 :root {
-  /* Light Theme Colors */
   --primary: #ff9800;
   --primary-light: linear-gradient(135deg, #ffe0a2, #fbc02d);
   --primary-dark: #f57c00;
@@ -20,7 +19,6 @@
   --white: #ffffff;
   --shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
-  /* Dark Theme Colors */
   --dark-primary: #8c6b4f;
   --dark-primary-light: #3a2e21;
   --dark-primary-dark: #5a4a3a;
@@ -157,4 +155,47 @@ button:hover {
 
 .theme-switch label:hover {
   transform: scale(1.1);
+}
+
+@media (max-width: 575.98px) {
+  .container {
+    width: 95%;
+    margin: 20px auto;
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .container {
+    width: 90%;
+    margin: 30px auto;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .container {
+    width: 85%;
+    margin: 40px auto;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 576px) {
+  .container {
+    margin: 10px auto;
+    padding: 10px;
+  }
+
+  h1 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+  }
+
+  button {
+    padding: 8px 15px;
+  }
 }

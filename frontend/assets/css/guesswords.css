@@ -6,7 +6,6 @@
 }
 
 :root {
-  /* Light Theme */
   --primary: #ff9800;
   --primary-light: linear-gradient(135deg, #ffe0a2, #fbc02d);
   --primary-dark: #f57c00;
@@ -20,7 +19,6 @@
   --white: #ffffff;
   --shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 
-  /* Dark Theme */
   --dark-primary: #8c6b4f;
   --dark-primary-light: #3a2e21;
   --dark-primary-dark: #5a4a3a;
@@ -257,4 +255,131 @@ button:hover {
 
 .theme-switch label:hover {
   transform: scale(1.1);
+}
+
+@media (max-width: 575.98px) {
+  body {
+    padding: 10px;
+    min-height: 100vh;
+  }
+
+  #app {
+    padding: 15px;
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 28px;
+    margin-bottom: 15px;
+  }
+
+  .hidden-word {
+    font-size: 24px;
+    letter-spacing: 8px;
+    padding: 8px;
+    margin-bottom: 15px;
+  }
+
+  #language-selector {
+    font-size: 1rem;
+  }
+
+  #letterInput {
+    width: 60px;
+    font-size: 14px;
+    padding: 10px;
+  }
+
+  button {
+    padding: 10px 15px;
+    font-size: 16px;
+    margin: 8px 4px;
+  }
+
+  .keyboard-key {
+    padding: 8px;
+    font-size: 16px;
+    min-width: 30px;
+  }
+
+  #messageBox,
+  #scoreboard {
+    font-size: 16px;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  #app {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 32px;
+  }
+
+  .hidden-word {
+    font-size: 28px;
+    letter-spacing: 10px;
+  }
+
+  #keyboard-container {
+    gap: 6px;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  #app {
+    padding: 25px;
+  }
+
+  .hidden-word {
+    font-size: 30px;
+  }
+}
+
+@media (orientation: landscape) and (max-width: 991.98px) {
+  body {
+    padding: 10px;
+  }
+
+  #app {
+    max-height: 95vh;
+    overflow-y: auto;
+  }
+
+  .hidden-word {
+    font-size: 24px;
+    letter-spacing: 6px;
+  }
+
+  #keyboard-container {
+    gap: 4px;
+  }
+
+  .keyboard-key {
+    padding: 6px;
+    font-size: 18px;
+  }
+}
+
+@media (max-height: 600px) {
+  #app {
+    padding: 15px;
+  }
+
+  h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+
+  .hidden-word {
+    font-size: 20px;
+    letter-spacing: 5px;
+    padding: 5px;
+  }
+
+  button {
+    padding: 8px 12px;
+    font-size: 14px;
+  }
 }

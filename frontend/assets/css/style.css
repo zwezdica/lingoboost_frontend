@@ -6,7 +6,6 @@
 }
 
 :root {
-  /* Light Theme Colors */
   --primary: #ff9800;
   --primary-light: linear-gradient(135deg, #ffe0a2, #fbc02d);
   --primary-dark: #f57c00;
@@ -20,7 +19,6 @@
   --white: #ffffff;
   --shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
-  /* Dark Theme Colors */
   --dark-primary: #8c6b4f;
   --dark-primary-light: #3a2e21;
   --dark-primary-dark: #5a4a3a;
@@ -534,7 +532,7 @@ form button:hover {
 
 .video-container {
   position: relative;
-  padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  padding-bottom: 56.25%;
   height: 0;
   overflow: hidden;
 }
@@ -688,7 +686,7 @@ form button:hover {
 }
 
 .modal-content {
-  background: white;
+  background: var(--white);
   padding: 20px;
   border-radius: 10px;
   text-align: center;
@@ -696,8 +694,8 @@ form button:hover {
 }
 
 #closeModal {
-  background: #28a745;
-  color: white;
+  background: var(--bg-secondary);
+  color: var(--white);
   border: none;
   padding: 10px 20px;
   cursor: pointer;
@@ -707,5 +705,217 @@ form button:hover {
 }
 
 #closeModal:hover {
-  background: #218838;
+  background: var(--primary-dark);
+}
+
+@media (max-width: 575.98px) {
+  .logo {
+    font-size: 40px;
+  }
+
+  .nav-list {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav-list li {
+    margin: 10px 0;
+  }
+
+  .intro p {
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  form,
+  #contactForm {
+    max-width: 100%;
+    padding: 15px;
+  }
+
+  .video-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .testimonial-slide {
+    padding: 15px;
+  }
+
+  .testimonial-img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .user-info {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .logo {
+    font-size: 2.5rem;
+  }
+
+  .nav-list {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .nav-list li {
+    margin: 0.625rem 0;
+  }
+
+  .intro p {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  form,
+  #contactForm {
+    max-width: 100%;
+    padding: 0.9375rem;
+  }
+
+  .video-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .testimonial-slide {
+    padding: 0.9375rem;
+  }
+
+  .testimonial-img {
+    width: 4.375rem;
+    height: 4.375rem;
+  }
+
+  .user-info {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .footer-links {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  @media (orientation: portrait) {
+    header {
+      padding: 1.25rem;
+    }
+
+    .container {
+      padding: 0 0.9375rem;
+    }
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) {
+  .logo {
+    font-size: 3.125rem;
+  }
+
+  .nav-list {
+    flex-wrap: wrap;
+  }
+
+  .nav-list li {
+    margin: 0.625rem 0.9375rem;
+  }
+
+  .video-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  form,
+  #contactForm {
+    max-width: 80%;
+  }
+
+  .testimonial-slide {
+    padding: 1.25rem;
+  }
+
+  @media (orientation: landscape) {
+    .video-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .testimonial-carousel {
+      max-width: 90%;
+    }
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .video-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  .testimonial-carousel {
+    max-width: 43.75rem;
+  }
+
+  .intro p {
+    font-size: 1.125rem;
+  }
+
+  @media (orientation: portrait) {
+    .video-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199.98px) {
+  .video-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .video-grid {
+    gap: 1.875rem;
+  }
+}
+
+@media (min-width: 1400px) {
+  .container {
+    max-width: 82.5rem;
+  }
+}
+
+@media (max-height: 600px) {
+  header {
+    padding: 0.9375rem 0;
+  }
+
+  .logo {
+    font-size: 2.5rem;
+  }
+
+  .container {
+    margin-top: 1.25rem;
+  }
+
+  @media (orientation: landscape) {
+    .video-grid {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.9375rem;
+    }
+
+    .testimonial-carousel {
+      max-width: 90%;
+    }
+  }
 }
