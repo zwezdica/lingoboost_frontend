@@ -18,6 +18,7 @@
   --border: #e8d5b5;
   --white: #ffffff;
   --shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  --card-bg: rgba(255, 255, 255, 0.4);
 
   --dark-primary: #8c6b4f;
   --dark-primary-light: #3a2e21;
@@ -31,6 +32,7 @@
   --dark-bg-secondary: #3a2e21;
   --dark-input-bg: #f5e6d3;
   --dark-border: #5a4a3a;
+  --dark-card-bg: rgba(58, 46, 33, 0.6);
 }
 
 [data-theme="dark"] {
@@ -44,6 +46,7 @@
   --bg: var(--dark-bg);
   --bg-secondary: var(--dark-bg-secondary);
   --border: var(--dark-border);
+  --card-bg: var(--dark-card-bg);
 }
 
 body {
@@ -121,6 +124,13 @@ button:hover {
   transform: translateY(-2px);
 }
 
+button:disabled {
+  background-color: #cccccc;
+  color: #666666;
+  cursor: not-allowed;
+  transform: none;
+}
+
 .loginLink {
   text-decoration: none;
   font-weight: bold;
@@ -130,6 +140,37 @@ button:hover {
 .loginLink:hover {
   color: var(--primary-dark);
 }
+
+/* Password Validation Styles */
+#password-strength {
+  margin: 10px 0;
+  padding: 10px;
+  background-color: var(--card-bg);
+  border-radius: 5px;
+  border: 1px solid var(--border);
+}
+
+.requirement {
+  color: var(--text-light);
+  margin: 5px 0;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.requirement.met {
+  color: var(--success);
+  font-weight: bold;
+}
+
+.requirement:before {
+  content: "○";
+  margin-right: 8px;
+}
+
+.requirement.met:before {
+  content: "✓";
+}
+
 .theme-switch {
   position: fixed;
   top: 20px;
@@ -168,6 +209,14 @@ button:hover {
     font-size: 1.5rem;
     margin-bottom: 20px;
   }
+
+  #password-strength {
+    padding: 8px;
+  }
+
+  .requirement {
+    font-size: 0.8rem;
+  }
 }
 
 @media (min-width: 576px) and (max-width: 767.98px) {
@@ -197,5 +246,10 @@ button:hover {
 
   button {
     padding: 8px 15px;
+  }
+
+  #password-strength {
+    margin: 5px 0;
+    padding: 5px;
   }
 }

@@ -6,7 +6,6 @@
 }
 
 :root {
-  /* Light Theme Colors */
   --primary: #ff9800;
   --primary-light: linear-gradient(135deg, #ffe0a2, #fbc02d);
   --primary-dark: #f57c00;
@@ -20,7 +19,6 @@
   --white: #ffffff;
   --shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 
-  /* Dark Theme Colors */
   --dark-primary: #8c6b4f;
   --dark-primary-light: #3a2e21;
   --dark-primary-dark: #5a4a3a;

@@ -22,7 +22,7 @@
 
   --dark-primary: #8c6b4f;
   --dark-primary-light: #3a2e21;
-  --dark-primary-dark: #5a4a3a;
+  --dark-primary-dark: #f88c20;
   --dark-secondary: #d49a6a;
   --dark-accent: #b05a4a;
   --dark-success: #7a9c5a;
@@ -69,7 +69,7 @@
 
 .theme-toggle:hover {
   transform: scale(1.1);
-  background: var(--primary-dark);
+  background: var(--primary-light);
 }
 
 .modal {
@@ -141,7 +141,7 @@
 }
 
 .modal-button-confirm:hover {
-  background-color: var(--primary-dark);
+  background-color: var(--accent);
 }
 
 .modal-button-danger {
@@ -159,7 +159,7 @@
 }
 
 .modal-button-cancel:hover {
-  background-color: var(--primary-dark);
+  background-color: var(--accent);
   color: var(--white);
 }
 
@@ -214,8 +214,8 @@ h2 {
 }
 
 button {
-  background: var(--primary);
-  color: var(--white);
+  background: var(--bg);
+  color: var(--text-light);
   border: none;
   border-radius: 6px;
   padding: 10px 20px;
@@ -265,6 +265,7 @@ input,
 select {
   display: block;
   width: 80%;
+  color: var(--dark-primary-dark);
   margin: 10px auto;
   padding: 8px;
   border: 1px solid var(--border);

@@ -22,7 +22,7 @@
   --dark-primary: #8c6b4f;
   --dark-primary-light: #3a2e21;
   --dark-primary-dark: #5a4a3a;
-  --dark-secondary: #7a9c5a;
+  --dark-secondary: #f2913d;
   --dark-accent: #b05a4a;
   --dark-text: #f5e6d3;
   --dark-text-dark: #e8d5b5;
@@ -220,7 +220,7 @@ button:hover {
   cursor: pointer;
   background-color: var(--primary-light);
   color: var(--text);
-  border: 2px solid var(--secondary);
+  border: 3px solid var(--secondary);
   border-radius: 5px;
   transition: all 0.2s;
 }

@@ -57,7 +57,7 @@ body {
   transition: all 0.3s ease;
 }
 
-.quiz-container {
+#quiz-container {
   width: 200vh;
   max-width: 1000px;
   height: auto;
