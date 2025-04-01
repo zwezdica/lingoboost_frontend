@@ -1,17 +1,69 @@
-document.addEventListener("DOMContentLoaded", () => {
-  initializeDarkMode();
+const API_URL = "http://localhost:5000/api/bingo";
+const DIFFICULTIES = [
+  { value: "easy", text: "Easy" },
+  { value: "medium", text: "Medium" },
+  { value: "hard", text: "Hard" },
+];
+const LANGUAGES = [
+  { value: "fr", text: "Français" },
+  { value: "es", text: "Español" },
+  { value: "de", text: "Deutsch" },
+  { value: "it", text: "Italian" },
+];
 
+let score = 0;
+let currentWord = null;
+
+document.addEventListener("DOMContentLoaded", () => {
+  initializeUI();
+  initializeDarkMode();
+  setupEventListeners();
+});
+
+function setupEventListeners() {
+  document.getElementById("start-button")?.addEventListener("click", startGame);
+  document.getElementById("back-to-home")?.addEventListener("click", () => {
+    window.location.href = "index.html";
+  });
+  document.getElementById("close-modal")?.addEventListener("click", () => {
+    document.getElementById("modal").style.display = "none";
+  });
+  document
+    .getElementById("close-translation-modal")
+    ?.addEventListener("click", () => {
+      document.getElementById("translation-modal").style.display = "none";
+    });
+
+  document
+    .getElementById("translation-input")
+    ?.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        handleTranslationSubmit();
+      }
+    });
+
+  document
+    .getElementById("submit-translation")
+    ?.addEventListener("click", handleTranslationSubmit);
+
+  document
+    .getElementById("theme-toggle")
+    ?.addEventListener("change", toggleTheme);
+
+  window.addEventListener("click", (event) => {
+    if (event.target === document.getElementById("modal")) {
+      document.getElementById("modal").style.display = "none";
+    }
+    if (event.target === document.getElementById("translation-modal")) {
+      document.getElementById("translation-modal").style.display = "none";
+    }
+  });
+}
+
+function initializeUI() {
   const app = document.getElementById("app");
 
-  const themeToggle = document.createElement("div");
-  themeToggle.className = "theme-switch";
-  themeToggle.innerHTML = `
-    <input type="checkbox" id="theme-toggle">
-    <label for="theme-toggle" title="Toggle dark mode">
-      ${localStorage.getItem("theme") === "dark" ? "☀️" : "🌙"}
-    </label>
-  `;
-  app.appendChild(themeToggle);
+  app.appendChild(createThemeToggle());
 
   const title = document.createElement("h1");
   title.innerHTML = '<i class="fas fa-gamepad"></i> Bingo Game';
@@ -19,67 +71,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const selectorContainer = document.createElement("div");
   selectorContainer.className = "selector-container";
-  app.appendChild(selectorContainer);
 
-  const levelContainer = document.createElement("div");
-  levelContainer.className = "selector-item";
+  selectorContainer.appendChild(
+    createSelector("level-selector", "Choose difficulty:", DIFFICULTIES)
+  );
 
-  const levelLabel = document.createElement("label");
-  levelLabel.setAttribute("for", "level-selector");
-  levelLabel.textContent = "Choose difficulty:";
-  levelContainer.appendChild(levelLabel);
-
-  const levelSelector = document.createElement("select");
-  levelSelector.id = "level-selector";
-
-  const difficulties = [
-    { value: "easy", text: "Easy" },
-    { value: "medium", text: "Medium" },
-    { value: "hard", text: "Hard" },
-  ];
-
-  difficulties.forEach((difficulty) => {
-    const option = document.createElement("option");
-    option.value = difficulty.value;
-    option.textContent = difficulty.text;
-    levelSelector.appendChild(option);
-  });
-
-  levelContainer.appendChild(levelSelector);
-  selectorContainer.appendChild(levelContainer);
-
-  const languageContainer = document.createElement("div");
-  languageContainer.className = "selector-item";
-
-  const languageLabel = document.createElement("label");
-  languageLabel.setAttribute("for", "language-selector");
-  languageLabel.textContent = "Choose language:";
-  languageContainer.appendChild(languageLabel);
-
-  const languageSelector = document.createElement("select");
-  languageSelector.id = "language-selector";
-
-  const languages = [
-    { value: "fr", text: "Français" },
-    { value: "es", text: "Español" },
-    { value: "de", text: "Deutsch" },
-    { value: "it", text: "Italian" },
-  ];
-
-  languages.forEach((language) => {
-    const option = document.createElement("option");
-    option.value = language.value;
-    option.textContent = language.text;
-    languageSelector.appendChild(option);
-  });
-
-  languageContainer.appendChild(languageSelector);
-  selectorContainer.appendChild(languageContainer);
+  selectorContainer.appendChild(
+    createSelector("language-selector", "Choose language:", LANGUAGES)
+  );
 
   const startButton = document.createElement("button");
   startButton.id = "start-button";
   startButton.textContent = "Start Game";
   selectorContainer.appendChild(startButton);
+
+  app.appendChild(selectorContainer);
 
   const backToHomeButton = document.createElement("button");
   backToHomeButton.id = "back-to-home";
@@ -95,22 +101,64 @@ document.addEventListener("DOMContentLoaded", () => {
   bingoTable.id = "bingo-table";
   app.appendChild(bingoTable);
 
+  app.appendChild(createModal("modal", "modal-title", "modal-message"));
+  app.appendChild(createTranslationModal());
+}
+
+function createThemeToggle() {
+  const themeToggle = document.createElement("div");
+  themeToggle.className = "theme-switch";
+  themeToggle.innerHTML = `
+    <input type="checkbox" id="theme-toggle">
+    <label for="theme-toggle" title="Toggle dark mode">
+      ${localStorage.getItem("theme") === "dark" ? "☀️" : "🌙"}
+    </label>
+  `;
+  return themeToggle;
+}
+
+function createSelector(id, labelText, options) {
+  const container = document.createElement("div");
+  container.className = "selector-item";
+
+  const label = document.createElement("label");
+  label.setAttribute("for", id);
+  label.textContent = labelText;
+  container.appendChild(label);
+
+  const selector = document.createElement("select");
+  selector.id = id;
+
+  options.forEach((option) => {
+    const optionElement = document.createElement("option");
+    optionElement.value = option.value;
+    optionElement.textContent = option.text;
+    selector.appendChild(optionElement);
+  });
+
+  container.appendChild(selector);
+  return container;
+}
+
+function createModal(id, titleId, messageId) {
   const modal = document.createElement("div");
-  modal.id = "modal";
+  modal.id = id;
   modal.className = "modal";
   modal.innerHTML = `
     <div class="modal-content">
-      <span id="close-modal">&times;</span>
-      <h2 id="modal-title"></h2>
-      <p id="modal-message"></p>
+      <span id="close-${id}">&times;</span>
+      <h2 id="${titleId}"></h2>
+      <p id="${messageId}"></p>
     </div>
   `;
-  app.appendChild(modal);
+  return modal;
+}
 
-  const translationModal = document.createElement("div");
-  translationModal.id = "translation-modal";
-  translationModal.className = "modal";
-  translationModal.innerHTML = `
+function createTranslationModal() {
+  const modal = document.createElement("div");
+  modal.id = "translation-modal";
+  modal.className = "modal";
+  modal.innerHTML = `
     <div class="modal-content">
       <span id="close-translation-modal">&times;</span>
       <h2 id="translation-modal-title"></h2>
@@ -118,170 +166,151 @@ document.addEventListener("DOMContentLoaded", () => {
       <button id="submit-translation">Submit</button>
     </div>
   `;
-  app.appendChild(translationModal);
+  return modal;
+}
 
-  let score = 0;
-  let currentWord = null;
+async function startGame() {
+  const level = document.getElementById("level-selector").value;
+  try {
+    const response = await fetch(`${API_URL}/words?level=${level}`);
+    if (!response.ok) throw new Error("Error fetching words");
 
-  function showModal(title, message) {
-    const modalTitle = document.getElementById("modal-title");
-    const modalMessage = document.getElementById("modal-message");
-    modalTitle.textContent = title;
-    modalMessage.textContent = message;
-    modal.style.display = "block";
-  }
-
-  const closeModal = document.getElementById("close-modal");
-  closeModal.addEventListener("click", () => {
-    modal.style.display = "none";
-  });
-
-  window.addEventListener("click", (event) => {
-    if (event.target === modal) {
-      modal.style.display = "none";
-    }
-  });
-
-  function showTranslationModal(word) {
-    currentWord = word;
-    const translationModalTitle = document.getElementById(
-      "translation-modal-title"
+    const { words } = await response.json();
+    generateBingoTable(words);
+  } catch (error) {
+    console.error("An error occurred:", error);
+    showModal(
+      "Error",
+      "An error occurred while loading words. Please try again."
     );
-    translationModalTitle.textContent = `Translate the word "${word.word}" to ${
-      languageSelector.options[languageSelector.selectedIndex].text
-    }:`;
-    const translationInput = document.getElementById("translation-input");
-    translationInput.value = "";
-    translationModal.style.display = "block";
+  }
+}
+
+function generateBingoTable(words) {
+  const bingoTable = document.getElementById("bingo-table");
+  bingoTable.innerHTML = "";
+  const size = Math.sqrt(words.length);
+
+  for (let i = 0; i < size; i++) {
+    const row = document.createElement("tr");
+    for (let j = 0; j < size; j++) {
+      const cell = document.createElement("td");
+      const word = words[i * size + j];
+      cell.textContent = word.word;
+      cell.dataset.wordId = word._id;
+      cell.addEventListener("click", () => showTranslationModal(word));
+      row.appendChild(cell);
+    }
+    bingoTable.appendChild(row);
+  }
+}
+
+function showModal(title, message) {
+  document.getElementById("modal-title").textContent = title;
+  document.getElementById("modal-message").textContent = message;
+  document.getElementById("modal").style.display = "block";
+}
+
+function showTranslationModal(word) {
+  currentWord = word;
+  const language = document.getElementById("language-selector");
+  document.getElementById(
+    "translation-modal-title"
+  ).textContent = `Translate the word "${word.word}" to ${
+    language.options[language.selectedIndex].text
+  }:`;
+
+  document.getElementById("translation-input").value = "";
+  document.getElementById("translation-modal").style.display = "block";
+}
+
+async function handleTranslationSubmit() {
+  const translationInput = document.getElementById("translation-input");
+  const userTranslation = translationInput.value.trim();
+
+  if (!userTranslation) {
+    showModal("Error", "Please enter a translation");
+    return;
   }
 
-  const closeTranslationModal = document.getElementById(
-    "close-translation-modal"
-  );
-  closeTranslationModal.addEventListener("click", () => {
-    translationModal.style.display = "none";
-  });
+  document.getElementById("translation-modal").style.display = "none";
+  await checkTranslation(currentWord, userTranslation.toLowerCase());
+}
 
-  window.addEventListener("click", (event) => {
-    if (event.target === translationModal) {
-      translationModal.style.display = "none";
-    }
-  });
+async function checkTranslation(word, userTranslation) {
+  const selectedLanguage = document.getElementById("language-selector").value;
 
-  const submitTranslation = document.getElementById("submit-translation");
-  submitTranslation.addEventListener("click", async () => {
-    const translationInput = document.getElementById("translation-input");
-    const userTranslation = translationInput.value.trim().toLowerCase();
-    if (userTranslation) {
-      translationModal.style.display = "none";
-      await checkTranslation(currentWord, userTranslation);
-    }
-  });
+  try {
+    const response = await fetch(`${API_URL}/check-translation`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        wordId: word._id,
+        language: selectedLanguage,
+        userTranslation: userTranslation.toLowerCase(),
+      }),
+    });
 
-  startButton.addEventListener("click", async () => {
-    const level = levelSelector.value;
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/bingo/words?level=${level}`
-      );
-      if (!response.ok) {
-        throw new Error("Error fetching words");
-      }
-      const { words } = await response.json();
-      generateBingoTable(words);
-    } catch (error) {
-      console.error("An error occurred:", error);
+    if (!response.ok) throw new Error("Error checking translation");
+
+    const { isCorrect, correctTranslation } = await response.json();
+    if (isCorrect) {
       showModal(
-        "Error",
-        "An error occurred while loading words. Please try again."
+        "Correct!",
+        `The correct translation is: ${correctTranslation}`
       );
-    }
-  });
-
-  function generateBingoTable(words) {
-    bingoTable.innerHTML = "";
-    const size = Math.sqrt(words.length);
-    for (let i = 0; i < size; i++) {
-      const row = document.createElement("tr");
-      for (let j = 0; j < size; j++) {
-        const cell = document.createElement("td");
-        const word = words[i * size + j];
-        cell.textContent = word.word;
-        cell.dataset.wordId = word._id;
-        cell.addEventListener("click", () => showTranslationModal(word));
-        row.appendChild(cell);
-      }
-      bingoTable.appendChild(row);
-    }
-  }
-
-  async function checkTranslation(word, userTranslation) {
-    const selectedLanguage = languageSelector.value;
-    try {
-      const response = await fetch(
-        "http://localhost:5000/api/bingo/check-translation",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            wordId: word._id,
-            language: selectedLanguage,
-            userTranslation: userTranslation.toLowerCase(),
-          }),
-        }
-      );
-      if (!response.ok) {
-        throw new Error("Error checking translation");
-      }
-      const { isCorrect, correctTranslation } = await response.json();
-      if (isCorrect) {
-        showModal(
-          "Correct!",
-          `The correct translation is: ${correctTranslation}`
-        );
-        score += 10;
-        scoreDisplay.textContent = `Score: ${score}`;
-      } else {
-        showModal(
-          "Incorrect!",
-          `The correct translation is: ${correctTranslation}`
-        );
-      }
-    } catch (error) {
-      console.error("An error occurred:", error);
-      showModal(
-        "Error",
-        "An error occurred while checking the translation. Please try again."
-      );
-    }
-  }
-
-  backToHomeButton.addEventListener("click", () => {
-    window.location.href = "index.html";
-  });
-
-  const themeCheckbox = document.getElementById("theme-toggle");
-  themeCheckbox.addEventListener("change", function () {
-    if (this.checked) {
-      document.documentElement.setAttribute("data-theme", "dark");
-      localStorage.setItem("theme", "dark");
-      document.querySelector(".theme-switch label").innerHTML = "☀️";
+      score += 10;
+      document.getElementById("score").textContent = `Score: ${score}`;
     } else {
-      document.documentElement.removeAttribute("data-theme");
-      localStorage.setItem("theme", "light");
-      document.querySelector(".theme-switch label").innerHTML = "🌙";
+      showModal(
+        "Incorrect!",
+        `The correct translation is: ${correctTranslation}`
+      );
     }
-  });
+  } catch (error) {
+    console.error("An error occurred:", error);
+    showModal(
+      "Error",
+      "An error occurred while checking the translation. Please try again."
+    );
+  }
+}
+function initializeDarkMode() {
+  const themeToggle = document.getElementById("theme-toggle");
+  const themeLabel = document.querySelector(".theme-switch label");
 
-  if (
+  if (!themeToggle || !themeLabel) return;
+
+  const isDarkMode = shouldUseDarkMode();
+  themeToggle.checked = isDarkMode;
+  themeLabel.innerHTML = isDarkMode ? "☀️" : "🌙";
+
+  if (isDarkMode) {
+    document.documentElement.setAttribute("data-theme", "dark");
+  }
+}
+
+function shouldUseDarkMode() {
+  return (
     localStorage.getItem("theme") === "dark" ||
     (window.matchMedia("(prefers-color-scheme: dark)").matches &&
       !localStorage.getItem("theme"))
-  ) {
-    themeCheckbox.checked = true;
-    document.documentElement.setAttribute("data-theme", "dark");
-    document.querySelector(".theme-switch label").innerHTML = "☀️";
-  }
-});
+  );
+}
 
-function initializeDarkMode() {}
+function toggleTheme() {
+  const themeToggle = document.getElementById("theme-toggle");
+  const themeLabel = document.querySelector(".theme-switch label");
+
+  if (!themeToggle || !themeLabel) return;
+
+  if (themeToggle.checked) {
+    document.documentElement.setAttribute("data-theme", "dark");
+    localStorage.setItem("theme", "dark");
+    themeLabel.innerHTML = "☀️";
+  } else {
+    document.documentElement.removeAttribute("data-theme");
+    localStorage.setItem("theme", "light");
+    themeLabel.innerHTML = "🌙";
+  }
+}

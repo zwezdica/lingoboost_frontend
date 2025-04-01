@@ -1,6 +1,63 @@
-document.addEventListener("DOMContentLoaded", function () {
-  initializeDarkMode();
+const API_URL = "http://localhost:5000/api/flashcards";
+const LANGUAGES = [
+  { value: "fr", text: "Français" },
+  { value: "es", text: "Español" },
+  { value: "de", text: "Deutsch" },
+  { value: "it", text: "Italian" },
+];
+const LANGUAGE_VOICES = {
+  fr: "fr-FR",
+  es: "es-ES",
+  de: "de-DE",
+  it: "it-IT",
+};
 
+let currentPage = 1;
+let selectedLanguage = "fr";
+
+document.addEventListener("DOMContentLoaded", () => {
+  checkAuthStatus();
+  initializeUI();
+  initializeDarkMode();
+  setupEventListeners();
+  fetchFlashcards();
+});
+
+function setupEventListeners() {
+  document
+    .getElementById("language-selector")
+    ?.addEventListener("change", (e) => {
+      selectedLanguage = e.target.value;
+      currentPage = 1;
+      fetchFlashcards();
+    });
+
+  document.getElementById("next-btn")?.addEventListener("click", () => {
+    currentPage++;
+    fetchFlashcards();
+  });
+
+  document.getElementById("previous-btn")?.addEventListener("click", () => {
+    if (currentPage > 1) {
+      currentPage--;
+      fetchFlashcards();
+    }
+  });
+
+  document
+    .getElementById("theme-toggle")
+    ?.addEventListener("change", toggleTheme);
+}
+
+function checkAuthStatus() {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("You must be logged in!");
+    window.location.href = "login.html";
+  }
+}
+
+function initializeUI() {
   const app = document.getElementById("app");
 
   const themeToggle = document.createElement("div");
@@ -15,18 +72,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const flashcardsContainer = document.createElement("div");
   flashcardsContainer.className = "flashcards";
-  app.appendChild(flashcardsContainer);
 
   const title = document.createElement("h2");
   title.innerHTML = '<i class="fas fa-clone"></i> Flashcards';
   flashcardsContainer.appendChild(title);
 
-  const backToHomeBtn = document.createElement("a");
-  backToHomeBtn.id = "back-to-home";
-  backToHomeBtn.className = "back-btn";
-  backToHomeBtn.href = "index.html";
-  backToHomeBtn.innerHTML = "⬅ Back to Home";
-  flashcardsContainer.appendChild(backToHomeBtn);
+  const backButton = document.createElement("a");
+  backButton.id = "back-to-home";
+  backButton.className = "back-btn";
+  backButton.href = "index.html";
+  backButton.innerHTML = "⬅ Back to Home";
+  flashcardsContainer.appendChild(backButton);
 
   const languageLabel = document.createElement("label");
   languageLabel.setAttribute("for", "language-selector");
@@ -35,21 +91,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const languageSelector = document.createElement("select");
   languageSelector.id = "language-selector";
-
-  const languages = [
-    { value: "fr", text: "Français" },
-    { value: "es", text: "Español" },
-    { value: "de", text: "Deutsch" },
-    { value: "it", text: "Italian" },
-  ];
-
-  languages.forEach((lang) => {
+  LANGUAGES.forEach((lang) => {
     const option = document.createElement("option");
     option.value = lang.value;
     option.textContent = lang.text;
     languageSelector.appendChild(option);
   });
-
   flashcardsContainer.appendChild(languageSelector);
 
   const loadingMessage = document.createElement("div");
@@ -65,160 +112,144 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const navigationButtons = document.createElement("div");
   navigationButtons.className = "navigation-buttons";
-
-  const previousBtn = document.createElement("button");
-  previousBtn.id = "previous-btn";
-  previousBtn.className = "prev-btn";
-  previousBtn.textContent = "Previous";
-  navigationButtons.appendChild(previousBtn);
-
-  const nextBtn = document.createElement("button");
-  nextBtn.id = "next-btn";
-  nextBtn.className = "next-btn";
-  nextBtn.textContent = "Next";
-  navigationButtons.appendChild(nextBtn);
-
+  navigationButtons.innerHTML = `
+    <button id="previous-btn" class="prev-btn">Previous</button>
+    <button id="next-btn" class="next-btn">Next</button>
+  `;
   flashcardsContainer.appendChild(navigationButtons);
 
-  let currentPage = 1;
-  let selectedLanguage = "fr";
+  app.appendChild(flashcardsContainer);
+}
 
-  async function fetchFlashcards() {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        alert("You must be logged in!");
-        window.location.href = "login.html";
-        return;
+async function fetchFlashcards() {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    showLoading(true);
+
+    const response = await fetch(
+      `${API_URL}/${selectedLanguage}?page=${currentPage}`,
+      {
+        method: "GET",
+        headers: { Authorization: `Bearer ${token}` },
       }
+    );
 
-      loadingMessage.style.display = "block";
-
-      const response = await fetch(
-        `http://localhost:5000/api/flashcards/${selectedLanguage}?page=${currentPage}`,
-        {
-          method: "GET",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-
-      if (!response.ok) {
-        const error = await response.json();
-        console.error(error.message || "Error loading flashcards.");
-        return;
-      }
-
-      const data = await response.json();
-      flashcardsContent.innerHTML = "";
-      loadingMessage.style.display = "none";
-
-      const flashcards = Array.isArray(data.flashcards) ? data.flashcards : [];
-      if (!flashcards.length) {
-        console.error("No flashcards found!");
-        return;
-      }
-
-      flashcards.forEach((card) => {
-        const cardElement = document.createElement("div");
-        cardElement.classList.add("flashcard");
-        cardElement.innerHTML = `
-          <div class="flashcard-inner">
-            <div class="flashcard-front">
-              <div class="word">${card.word}</div>
-            </div>
-            <div class="flashcard-back">
-              <div class="translation">${card.translation}</div>
-              <button class="speak-btn">🔊</button>
-            </div>
-          </div>
-        `;
-
-        cardElement
-          .querySelector(".speak-btn")
-          .addEventListener("click", (event) => {
-            event.stopPropagation();
-            speakWord(card.translation, selectedLanguage);
-          });
-
-        cardElement.addEventListener("click", () => {
-          cardElement.classList.toggle("flipped");
-        });
-
-        flashcardsContent.appendChild(cardElement);
-      });
-
-      previousBtn.style.display = currentPage > 1 ? "block" : "none";
-    } catch (err) {
-      console.error("Error fetching flashcards:", err);
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || "Error loading flashcards");
     }
+
+    const data = await response.json();
+    showLoading(false);
+    renderFlashcards(data.flashcards || []);
+    updateNavigation();
+  } catch (error) {
+    console.error("Fetch error:", error);
+    showLoading(false);
+  }
+}
+
+function renderFlashcards(flashcards) {
+  const container = document.getElementById("flashcards-container");
+  container.innerHTML = "";
+
+  if (!flashcards.length) {
+    container.innerHTML = "<p>No flashcards found</p>";
+    return;
   }
 
-  function speakWord(word, lang) {
-    const utterance = new SpeechSynthesisUtterance(word);
-    const languageMap = { fr: "fr-FR", es: "es-ES", de: "de-DE", it: "it-IT" };
+  flashcards.forEach((card) => {
+    const cardElement = document.createElement("div");
+    cardElement.className = "flashcard";
+    cardElement.innerHTML = `
+      <div class="flashcard-inner">
+        <div class="flashcard-front">
+          <div class="word">${card.word}</div>
+        </div>
+        <div class="flashcard-back">
+          <div class="translation">${card.translation}</div>
+          <button class="speak-btn">🔊</button>
+        </div>
+      </div>
+    `;
 
-    if (languageMap[lang]) {
-      utterance.lang = languageMap[lang];
-      const voices = speechSynthesis.getVoices();
-      const selectedVoice = voices.find(
-        (voice) => voice.lang === languageMap[lang]
-      );
+    cardElement.addEventListener("click", () => {
+      cardElement.classList.toggle("flipped");
+    });
 
-      if (selectedVoice) {
-        utterance.voice = selectedVoice;
-      }
-      speechSynthesis.speak(utterance);
-    } else {
-      console.warn(`Language "${lang}" is not supported for speech synthesis.`);
-    }
+    cardElement.querySelector(".speak-btn").addEventListener("click", (e) => {
+      e.stopPropagation();
+      speakWord(card.translation, selectedLanguage);
+    });
+
+    container.appendChild(cardElement);
+  });
+}
+
+function updateNavigation() {
+  const prevBtn = document.getElementById("previous-btn");
+  prevBtn.style.display = currentPage > 1 ? "block" : "none";
+}
+
+function showLoading(show) {
+  document.getElementById("loading-message").style.display = show
+    ? "block"
+    : "none";
+}
+
+function speakWord(word, lang) {
+  if (!LANGUAGE_VOICES[lang]) {
+    console.warn(`Language "${lang}" not supported for speech`);
+    return;
   }
 
-  speechSynthesis.onvoiceschanged = () => {
-    console.log("Voices loaded:", speechSynthesis.getVoices());
-  };
+  const utterance = new SpeechSynthesisUtterance(word);
+  utterance.lang = LANGUAGE_VOICES[lang];
 
-  languageSelector.addEventListener("change", (e) => {
-    selectedLanguage = e.target.value;
-    currentPage = 1;
-    fetchFlashcards();
-  });
+  const voices = speechSynthesis.getVoices();
+  const voice = voices.find((v) => v.lang === LANGUAGE_VOICES[lang]);
 
-  nextBtn.addEventListener("click", () => {
-    currentPage++;
-    fetchFlashcards();
-  });
+  if (voice) utterance.voice = voice;
+  speechSynthesis.speak(utterance);
+}
 
-  previousBtn.addEventListener("click", () => {
-    if (currentPage > 1) {
-      currentPage--;
-      fetchFlashcards();
-    }
-  });
+function initializeDarkMode() {
+  const themeToggle = document.getElementById("theme-toggle");
+  const themeLabel = document.querySelector(".theme-switch label");
 
-  const themeCheckbox = document.getElementById("theme-toggle");
-  themeCheckbox.addEventListener("change", function () {
-    if (this.checked) {
-      document.documentElement.setAttribute("data-theme", "dark");
-      localStorage.setItem("theme", "dark");
-      document.querySelector(".theme-switch label").innerHTML = "☀️";
-    } else {
-      document.documentElement.removeAttribute("data-theme");
-      localStorage.setItem("theme", "light");
-      document.querySelector(".theme-switch label").innerHTML = "🌙";
-    }
-  });
+  if (!themeToggle || !themeLabel) return;
 
-  if (
+  const isDarkMode =
     localStorage.getItem("theme") === "dark" ||
     (window.matchMedia("(prefers-color-scheme: dark)").matches &&
-      !localStorage.getItem("theme"))
-  ) {
-    themeCheckbox.checked = true;
+      !localStorage.getItem("theme"));
+
+  if (isDarkMode) {
+    themeToggle.checked = true;
     document.documentElement.setAttribute("data-theme", "dark");
-    document.querySelector(".theme-switch label").innerHTML = "☀️";
+    themeLabel.innerHTML = "☀️";
   }
+}
 
-  fetchFlashcards();
-});
+function toggleTheme() {
+  const themeToggle = document.getElementById("theme-toggle");
+  const themeLabel = document.querySelector(".theme-switch label");
 
-function initializeDarkMode() {}
+  if (!themeToggle || !themeLabel) return;
+
+  if (themeToggle.checked) {
+    document.documentElement.setAttribute("data-theme", "dark");
+    localStorage.setItem("theme", "dark");
+    themeLabel.innerHTML = "☀️";
+  } else {
+    document.documentElement.removeAttribute("data-theme");
+    localStorage.setItem("theme", "light");
+    themeLabel.innerHTML = "🌙";
+  }
+}
+
+speechSynthesis.onvoiceschanged = () => {
+  console.log("Voices loaded:", speechSynthesis.getVoices());
+};

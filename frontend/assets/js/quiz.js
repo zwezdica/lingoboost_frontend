@@ -1,20 +1,57 @@
-document.addEventListener("DOMContentLoaded", function () {
+const API_ENDPOINTS = {
+  QUIZZES: "http://localhost:5000/api/quizzes",
+};
+
+const LANGUAGES = [
+  { value: "fr", text: "Français" },
+  { value: "es", text: "Español" },
+  { value: "de", text: "Deutsch" },
+  { value: "it", text: "Italian" },
+];
+
+const state = {
+  currentQuestionIndex: 0,
+  questions: [],
+  selectedLanguage: "fr",
+  correctAnswers: 0,
+  totalQuestions: 0,
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  checkAuthentication();
+  setupQuizUI();
   initializeDarkMode();
+  setupEventListeners();
 
-  let currentQuestionIndex = 0;
-  let questions = [];
-  let selectedLanguage = "fr";
-  let correctAnswers = 0;
-  let totalQuestions = 0;
+  // Sync theme across tabs
+  window.addEventListener("storage", (event) => {
+    if (event.key === "theme") {
+      initializeDarkMode();
+    }
+  });
+});
 
+function setupQuizUI() {
   const quizContainer = document.getElementById("quiz-container");
 
-  const token = localStorage.getItem("token");
-  if (!token) {
-    alert("You must be logged in to play.");
-    window.location.href = "login.html";
-    return;
-  }
+  quizContainer.innerHTML = createQuizHTML();
+
+
+  const languageSelector = document.getElementById("language-selector");
+  LANGUAGES.forEach((lang) => {
+    const option = document.createElement("option");
+    option.value = lang.value;
+    option.textContent = lang.text;
+    languageSelector.appendChild(option);
+  });
+
+  // Add theme toggle at the bottom
+  quizContainer.appendChild(createThemeToggle());
+}
+
+function createThemeToggle() {
+  const themeContainer = document.createElement("div");
+  themeContainer.className = "theme-toggle-container";
 
   const themeToggle = document.createElement("div");
   themeToggle.className = "theme-switch";
@@ -24,211 +61,242 @@ document.addEventListener("DOMContentLoaded", function () {
       ${localStorage.getItem("theme") === "dark" ? "☀️" : "🌙"}
     </label>
   `;
-  document.body.appendChild(themeToggle);
 
-  const themeCheckbox = document.getElementById("theme-toggle");
-  themeCheckbox.addEventListener("change", function () {
-    if (this.checked) {
-      document.documentElement.setAttribute("data-theme", "dark");
-      localStorage.setItem("theme", "dark");
-      document.querySelector(".theme-switch label").innerHTML = "☀️";
-    } else {
-      document.documentElement.removeAttribute("data-theme");
-      localStorage.setItem("theme", "light");
-      document.querySelector(".theme-switch label").innerHTML = "🌙";
-    }
-  });
+  themeContainer.appendChild(themeToggle);
+  return themeContainer;
+}
 
-  if (
-    localStorage.getItem("theme") === "dark" ||
-    (window.matchMedia("(prefers-color-scheme: dark)").matches &&
-      !localStorage.getItem("theme"))
-  ) {
-    themeCheckbox.checked = true;
-    document.documentElement.setAttribute("data-theme", "dark");
-    document.querySelector(".theme-switch label").innerHTML = "☀️";
-  }
+function createQuizHTML() {
+  return `
+    <div class="quiz-content">
+      <h2><i class="fas fa-question-circle"></i> Language Quiz</h2>
+      <a href="index.html" class="back-btn">⬅ Back to Home</a>
 
-  const createQuizHTML = function () {
-    quizContainer.innerHTML = `
-      <div class="quiz-container">
-        <h2><i class="fas fa-question-circle"></i> Language Quiz</h2>
-        <a href="index.html" class="back-btn">⬅ Back to Home</a>
-
-        <!-- Scoreboard -->
-        <div id="scoreboard">
-          <span id="correct-score">Correct: 0</span> | 
-          <span id="incorrect-score">Incorrect: 0</span>
-        </div>
-
-        <!-- Language selection -->
-        <label for="language-selector">Choose Language:</label>
-        <select id="language-selector">
-          <option value="fr">Français</option>
-          <option value="es">Español</option>
-          <option value="de">Deutsch</option>
-          <option value="it">Italian</option>
-        </select>
-        <button id="start-quiz-btn">Start quiz</button>
-
-        <!-- Question box -->
-        <div class="question-box" id="question-container"></div>
-
-        <!-- Options -->
-        <div class="options" id="options-container"></div>
-
-        <!-- Navigation buttons -->
-        <div class="buttons">
-          <button class="prev-btn" id="prev-btn" style="display: none">Previous</button>
-          <button class="next-btn" id="next-btn" style="display: none">Next</button>
-        </div>
-        
-        <!-- Feedback GIF -->
-        <!-- Empty div for GIF will be added dynamically between buttons -->
+      <div id="scoreboard">
+        <span id="correct-score">Correct: 0</span> | 
+        <span id="incorrect-score">Incorrect: 0</span>
       </div>
-    `;
 
-    const questionContainer = document.getElementById("question-container");
-    const optionsContainer = document.getElementById("options-container");
-    const nextButton = document.getElementById("next-btn");
-    const prevButton = document.getElementById("prev-btn");
-    const languageSelector = document.getElementById("language-selector");
-    const startQuizButton = document.getElementById("start-quiz-btn");
-    const correctScore = document.getElementById("correct-score");
-    const incorrectScore = document.getElementById("incorrect-score");
+      <label for="language-selector">Choose Language:</label>
+      <select id="language-selector"></select>
+      <button id="start-quiz-btn">Start quiz</button>
 
-    const gifContainer = document.createElement("div");
-    gifContainer.id = "gif-container";
-    const buttonsContainer = document.querySelector(".buttons");
-    buttonsContainer.insertBefore(gifContainer, nextButton);
+      <div class="question-box" id="question-container"></div>
+      <div class="options" id="options-container"></div>
 
-    languageSelector.value = selectedLanguage;
+      <div class="buttons">
+        <button class="prev-btn" id="prev-btn" style="display: none">Previous</button>
+        <div id="gif-container"></div>
+        <button class="next-btn" id="next-btn" style="display: none">Next</button>
+      </div>
+    </div>
+  `;
+}
 
-    async function fetchQuestions(language) {
-      console.log("Fetching questions for language:", language);
-      try {
-        const response = await fetch(
-          `http://localhost:5000/api/quizzes/${language}`,
-          {
-            method: "GET",
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch questions");
-        }
-
-        const data = await response.json();
-        questions = data.filter(function (question) {
-          return question.language === language;
-        });
-
-        if (questions.length === 0) {
-          questionContainer.textContent =
-            "No questions available for this language.";
-          return;
-        }
-
-        totalQuestions = questions.length;
-        currentQuestionIndex = 0;
-        correctAnswers = 0;
-        updateScoreboard();
-        renderQuestion();
-      } catch (error) {
-        console.error("Error fetching questions:", error);
-        questionContainer.textContent = "Failed to load questions.";
-      }
-    }
-
-    function renderQuestion() {
-      if (currentQuestionIndex >= questions.length) {
-        questionContainer.textContent = `Quiz completed! Final score: ${correctAnswers} / ${totalQuestions}`;
-        optionsContainer.innerHTML = "";
-        nextButton.style.display = "none";
-        prevButton.style.display = "none";
-        return;
-      }
-
-      const currentQuestion = questions[currentQuestionIndex];
-      questionContainer.textContent = currentQuestion.question;
-      optionsContainer.innerHTML = "";
-      gifContainer.innerHTML = "";
-
-      currentQuestion.options.forEach(function (option) {
-        const button = document.createElement("button");
-        button.textContent = option;
-        button.classList.add("option-btn");
-        button.onclick = function () {
-          checkAnswer(option, currentQuestion.answer);
-        };
-        optionsContainer.appendChild(button);
-      });
-
-      nextButton.style.display = "inline-block";
-      prevButton.style.display =
-        currentQuestionIndex > 0 ? "inline-block" : "none";
-    }
-
-    function checkAnswer(selectedOption, correctAnswer) {
-      const isCorrect = selectedOption === correctAnswer;
-
-      if (isCorrect) {
-        correctAnswers++;
-      }
-
-      updateScoreboard();
-
-      gifContainer.innerHTML = `<img src="${
-        isCorrect ? "./assets/img/correct.gif" : "./assets/img/wrongAn.gif"
-      }" alt="${isCorrect ? "Correct" : "Wrong"}">`;
-      nextButton.style.display = "inline-block";
-    }
-
-    function updateScoreboard() {
-      correctScore.textContent = `Correct: ${correctAnswers}`;
-      incorrectScore.textContent = `Incorrect: ${
-        currentQuestionIndex - correctAnswers
-      }`;
-    }
-
-    nextButton.addEventListener("click", function () {
-      currentQuestionIndex++;
-      renderQuestion();
+function setupEventListeners() {
+  document
+    .getElementById("theme-toggle")
+    ?.addEventListener("change", handleThemeToggle);
+  document
+    .getElementById("language-selector")
+    ?.addEventListener("change", (e) => {
+      state.selectedLanguage = e.target.value;
     });
+  document
+    .getElementById("start-quiz-btn")
+    ?.addEventListener("click", startQuiz);
+  document
+    .getElementById("next-btn")
+    ?.addEventListener("click", showNextQuestion);
+  document
+    .getElementById("prev-btn")
+    ?.addEventListener("click", showPreviousQuestion);
+}
 
-    prevButton.addEventListener("click", function () {
-      if (currentQuestionIndex > 0) {
-        currentQuestionIndex--;
-        renderQuestion();
-      }
-    });
-
-    languageSelector.addEventListener("change", function (event) {
-      selectedLanguage = event.target.value;
-    });
-
-    startQuizButton.addEventListener("click", function () {
-      if (!selectedLanguage) {
-        alert("Please select a language.");
-        return;
-      }
-      fetchQuestions(selectedLanguage);
-    });
-  };
-
-  createQuizHTML();
-});
+function checkAuthentication() {
+  if (!localStorage.getItem("token")) {
+    alert("You must be logged in to play.");
+    window.location.href = "login.html";
+  }
+}
 
 function initializeDarkMode() {
-  if (
-    localStorage.getItem("theme") === "dark" ||
-    (window.matchMedia("(prefers-color-scheme: dark)").matches &&
-      !localStorage.getItem("theme"))
-  ) {
+  const themeToggle = document.getElementById("theme-toggle");
+  const themeLabel = document.querySelector(".theme-switch label");
+
+  if (!themeToggle || !themeLabel) return;
+
+  const savedTheme = localStorage.getItem("theme");
+  const systemPrefersDark = window.matchMedia(
+    "(prefers-color-scheme: dark)"
+  ).matches;
+
+  const isDarkMode =
+    savedTheme === "dark" || (!savedTheme && systemPrefersDark);
+
+  themeToggle.checked = isDarkMode;
+  if (isDarkMode) {
     document.documentElement.setAttribute("data-theme", "dark");
+    themeLabel.textContent = "☀️";
+  } else {
+    document.documentElement.removeAttribute("data-theme");
+    themeLabel.textContent = "🌙";
   }
+}
+
+function handleThemeToggle() {
+  const themeToggle = document.getElementById("theme-toggle");
+  const themeLabel = document.querySelector(".theme-switch label");
+
+  if (!themeToggle || !themeLabel) return;
+
+  if (themeToggle.checked) {
+    document.documentElement.setAttribute("data-theme", "dark");
+    localStorage.setItem("theme", "dark");
+    themeLabel.textContent = "☀️";
+  } else {
+    document.documentElement.removeAttribute("data-theme");
+    localStorage.setItem("theme", "light");
+    themeLabel.textContent = "🌙";
+  }
+
+  window.dispatchEvent(new CustomEvent("themeChanged"));
+}
+
+
+async function startQuiz() {
+  if (!state.selectedLanguage) {
+    alert("Please select a language.");
+    return;
+  }
+
+  try {
+    await fetchQuestions(state.selectedLanguage);
+  } catch (error) {
+    console.error("Error starting quiz:", error);
+    document.getElementById("question-container").textContent =
+      "Error loading quiz. Please try again.";
+  }
+}
+
+async function fetchQuestions(language) {
+  try {
+    const response = await fetch(`${API_ENDPOINTS.QUIZZES}/${language}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) throw new Error("Failed to fetch questions");
+
+    const data = await response.json();
+    state.questions = data.filter((q) => q.language === language);
+    state.totalQuestions = state.questions.length;
+    state.currentQuestionIndex = 0;
+    state.correctAnswers = 0;
+
+    updateScoreboard();
+    renderQuestion();
+  } catch (error) {
+    console.error("Error fetching questions:", error);
+    showErrorMessage();
+  }
+}
+
+function renderQuestion() {
+  const { currentQuestionIndex, questions } = state;
+  const questionContainer = document.getElementById("question-container");
+  const optionsContainer = document.getElementById("options-container");
+  const nextButton = document.getElementById("next-btn");
+  const prevButton = document.getElementById("prev-btn");
+  const gifContainer = document.getElementById("gif-container");
+
+  if (currentQuestionIndex >= questions.length) {
+    showQuizCompletion();
+    return;
+  }
+
+  const currentQuestion = questions[currentQuestionIndex];
+  questionContainer.textContent = currentQuestion.question;
+  optionsContainer.innerHTML = "";
+  gifContainer.innerHTML = "";
+
+  renderOptions(currentQuestion, optionsContainer);
+  updateNavigationButtons(nextButton, prevButton);
+}
+
+function updateNavigationButtons(nextButton, prevButton) {
+  nextButton.style.display = "inline-block";
+  prevButton.style.display =
+    state.currentQuestionIndex > 0 ? "inline-block" : "none";
+}
+
+function renderOptions(question, container) {
+  question.options.forEach((option) => {
+    const button = document.createElement("button");
+    button.textContent = option;
+    button.classList.add("option-btn");
+    button.onclick = () => checkAnswer(option, question.answer);
+    container.appendChild(button);
+  });
+}
+
+function checkAnswer(selectedOption, correctAnswer) {
+  const isCorrect = selectedOption === correctAnswer;
+  const gifContainer = document.getElementById("gif-container");
+
+  if (isCorrect) {
+    state.correctAnswers++;
+  }
+
+  updateScoreboard();
+  showFeedbackGif(isCorrect, gifContainer);
+  document.getElementById("next-btn").style.display = "inline-block";
+}
+
+function updateScoreboard() {
+  document.getElementById(
+    "correct-score"
+  ).textContent = `Correct: ${state.correctAnswers}`;
+  document.getElementById("incorrect-score").textContent = `Incorrect: ${
+    state.currentQuestionIndex - state.correctAnswers
+  }`;
+}
+
+function showNextQuestion() {
+  state.currentQuestionIndex++;
+  renderQuestion();
+}
+
+function showPreviousQuestion() {
+  if (state.currentQuestionIndex > 0) {
+    state.currentQuestionIndex--;
+    renderQuestion();
+  }
+}
+
+function showQuizCompletion() {
+  const questionContainer = document.getElementById("question-container");
+  const nextButton = document.getElementById("next-btn");
+  const prevButton = document.getElementById("prev-btn");
+
+  questionContainer.textContent = `Quiz completed! Final score: ${state.correctAnswers} / ${state.totalQuestions}`;
+  document.getElementById("options-container").innerHTML = "";
+  nextButton.style.display = "none";
+  prevButton.style.display = "none";
+}
+
+function showFeedbackGif(isCorrect, container) {
+  container.innerHTML = `
+    <img src="./assets/img/${isCorrect ? "correct" : "wrongAn"}.gif" 
+         alt="${isCorrect ? "Correct" : "Wrong"}">
+  `;
+}
+
+function showErrorMessage() {
+  document.getElementById("question-container").textContent = state.questions
+    .length
+    ? "Failed to load questions."
+    : "No questions available.";
 }

@@ -1,15 +1,57 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const token = localStorage.getItem("token");
-  const username = localStorage.getItem("username");
+const API_URL = "http://localhost:5000/api/dragdrops";
+const LANGUAGES = [
+  { value: "fr", text: "Français" },
+  { value: "es", text: "Español" },
+  { value: "de", text: "Deutsch" },
+  { value: "it", text: "Italian" },
+];
+const WORDS_PER_PAGE = 4;
 
+let words = [];
+let draggedWord = null;
+let currentIndex = 0;
+let correctCount = 0;
+let incorrectCount = 0;
+
+document.addEventListener("DOMContentLoaded", () => {
+  checkAuthStatus();
+  initializeUI();
+  initializeDarkMode();
+  setupEventListeners();
+  fetchWords(document.getElementById("languageDropdown").value);
+});
+
+function setupEventListeners() {
+  document
+    .getElementById("languageDropdown")
+    ?.addEventListener("change", () => {
+      fetchWords(document.getElementById("languageDropdown").value);
+    });
+
+  document
+    .getElementById("prevButton")
+    ?.addEventListener("click", showPreviousWords);
+  document
+    .getElementById("nextButton")
+    ?.addEventListener("click", showNextWords);
+  document.getElementById("backToHome")?.addEventListener("click", () => {
+    window.location.href = "index.html";
+  });
+
+  document
+    .getElementById("theme-toggle")
+    ?.addEventListener("change", toggleTheme);
+}
+
+function checkAuthStatus() {
+  const token = localStorage.getItem("token");
   if (!token) {
     alert("You must be logged in to play.");
     window.location.href = "login.html";
-    return;
   }
+}
 
-  initializeDarkMode();
-
+function initializeUI() {
   const app = document.getElementById("app");
 
   const themeToggle = document.createElement("div");
@@ -24,7 +66,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const gameContainer = document.createElement("div");
   gameContainer.className = "game-container";
-  app.appendChild(gameContainer);
 
   const title = document.createElement("h1");
   title.innerHTML = '<i class="fas fa-hand-paper"></i> Drag and Drop Game';
@@ -32,240 +73,220 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const languageDropdown = document.createElement("select");
   languageDropdown.id = "languageDropdown";
-
-  const languages = [
-    { value: "fr", text: "Français" },
-    { value: "es", text: "Español" },
-    { value: "de", text: "Deutsch" },
-    { value: "it", text: "Italian" },
-  ];
-
-  languages.forEach((lang) => {
+  LANGUAGES.forEach((lang) => {
     const option = document.createElement("option");
     option.value = lang.value;
     option.textContent = lang.text;
     languageDropdown.appendChild(option);
   });
-
   gameContainer.appendChild(languageDropdown);
 
   const scoreboard = document.createElement("div");
   scoreboard.id = "scoreboard";
-
-  const correctAnswers = document.createElement("p");
-  correctAnswers.innerHTML =
-    'Correct answers: <span id="correctCount">0</span>';
-  scoreboard.appendChild(correctAnswers);
-
-  const incorrectAnswers = document.createElement("p");
-  incorrectAnswers.innerHTML =
-    'Incorrect answers: <span id="incorrectCount">0</span>';
-  scoreboard.appendChild(incorrectAnswers);
-
+  scoreboard.innerHTML = `
+    <p>Correct answers: <span id="correctCount">0</span></p>
+    <p>Incorrect answers: <span id="incorrectCount">0</span></p>
+  `;
   gameContainer.appendChild(scoreboard);
 
-  const wordsContainer = document.createElement("div");
-  wordsContainer.className = "term-row";
-  wordsContainer.id = "words-container";
-  gameContainer.appendChild(wordsContainer);
-
-  const dropContainer = document.createElement("div");
-  dropContainer.className = "translation-row";
-  dropContainer.id = "drop-container";
-  gameContainer.appendChild(dropContainer);
+  gameContainer.appendChild(createWordsContainer());
+  gameContainer.appendChild(createDropContainer());
 
   const navigationButtons = document.createElement("div");
   navigationButtons.className = "navigation-buttons";
-
-  const prevButton = document.createElement("button");
-  prevButton.id = "prevButton";
-  prevButton.textContent = "Previous";
-  navigationButtons.appendChild(prevButton);
-
-  const nextButton = document.createElement("button");
-  nextButton.id = "nextButton";
-  nextButton.textContent = "Next";
-  navigationButtons.appendChild(nextButton);
-
+  navigationButtons.innerHTML = `
+    <button id="prevButton">Previous</button>
+    <button id="nextButton">Next</button>
+  `;
   gameContainer.appendChild(navigationButtons);
 
-  const backToHomeButton = document.createElement("button");
-  backToHomeButton.id = "backToHome";
-  backToHomeButton.textContent = "⬅ Back to Home";
-  gameContainer.appendChild(backToHomeButton);
+  const backButton = document.createElement("button");
+  backButton.id = "backToHome";
+  backButton.textContent = "⬅ Back to Home";
+  gameContainer.appendChild(backButton);
 
-  let words = [];
-  let draggedWord = null;
-  let currentIndex = 0;
-  let correctCount = 0;
-  let incorrectCount = 0;
+  app.appendChild(gameContainer);
+}
 
-  function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
+function createWordsContainer() {
+  const container = document.createElement("div");
+  container.className = "term-row";
+  container.id = "words-container";
+  return container;
+}
 
-  async function fetchWords(language) {
-    const token = localStorage.getItem("token");
+function createDropContainer() {
+  const container = document.createElement("div");
+  container.className = "translation-row";
+  container.id = "drop-container";
+  return container;
+}
 
-    if (!token) {
-      alert("You must be logged in to play.");
-      window.location.href = "login.html";
+async function fetchWords(language) {
+  const token = localStorage.getItem("token");
+  if (!token) return;
+
+  try {
+    const response = await fetch(`${API_URL}/words/${language}`, {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      console.error(error.message || "Error loading words");
       return;
     }
 
-    try {
-      const response = await fetch(
-        `http://localhost:5000/api/dragdrops/words/${language}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        const error = await response.json();
-        console.error(
-          error.message || "An error occurred while loading words."
-        );
-        return;
-      }
-
-      const data = await response.json();
-      if (Array.isArray(data) && data.length > 0) {
-        words = data;
-        currentIndex = 0;
-        displayWords();
-      } else {
-        console.error("Invalid data received from the server.");
-      }
-    } catch (error) {
-      console.error("An error occurred:", error);
-    }
-  }
-
-  function displayWords() {
-    wordsContainer.innerHTML = "";
-    dropContainer.innerHTML = "";
-
-    const currentWords = words.slice(currentIndex, currentIndex + 4);
-
-    currentWords.forEach((word) => {
-      const wordCard = document.createElement("div");
-      wordCard.classList.add("word-card");
-      wordCard.textContent = word.word;
-      wordCard.setAttribute("draggable", "true");
-      wordCard.addEventListener("dragstart", dragStart);
-      wordsContainer.appendChild(wordCard);
-    });
-
-    const translations = currentWords.map((word) => ({
-      translation: word.translation || "No translation available",
-      correctWord: word.word,
-    }));
-
-    const shuffledTranslations = shuffleArray(translations);
-
-    shuffledTranslations.forEach((translation) => {
-      const translationCard = document.createElement("div");
-      translationCard.classList.add("icon-card");
-      translationCard.textContent = translation.translation;
-      translationCard.setAttribute("data-translation", translation.correctWord);
-      translationCard.addEventListener("dragover", (event) =>
-        event.preventDefault()
-      );
-      translationCard.addEventListener("drop", function (event) {
-        event.preventDefault();
-        if (draggedWord) {
-          const draggedWordText = draggedWord.textContent.trim();
-          const correctTranslation =
-            translationCard.getAttribute("data-translation");
-
-          if (correctTranslation === draggedWordText) {
-            translationCard.style.backgroundColor = "#036932";
-            draggedWord.style.backgroundColor = "#036932";
-            draggedWord.setAttribute("draggable", false);
-            translationCard.classList.add("matched");
-            correctCount++;
-          } else {
-            translationCard.style.backgroundColor = "#f50000";
-            draggedWord.style.backgroundColor = "#f50000";
-            incorrectCount++;
-            setTimeout(() => {
-              translationCard.style.backgroundColor = "";
-              draggedWord.style.backgroundColor = "";
-            }, 1000);
-          }
-          draggedWord = null;
-          updateScoreboard();
-        }
-      });
-      dropContainer.appendChild(translationCard);
-    });
-  }
-
-  function dragStart(event) {
-    draggedWord = event.target;
-  }
-
-  function updateScoreboard() {
-    const correctCountDisplay = document.getElementById("correctCount");
-    const incorrectCountDisplay = document.getElementById("incorrectCount");
-    correctCountDisplay.textContent = correctCount;
-    incorrectCountDisplay.textContent = incorrectCount;
-  }
-
-  languageDropdown.addEventListener("change", function () {
-    fetchWords(languageDropdown.value);
-  });
-
-  prevButton.addEventListener("click", function () {
-    if (currentIndex > 0) {
-      currentIndex -= 4;
+    const data = await response.json();
+    if (Array.isArray(data) && data.length > 0) {
+      words = data;
+      currentIndex = 0;
       displayWords();
-    }
-  });
-
-  nextButton.addEventListener("click", function () {
-    if (currentIndex + 4 < words.length) {
-      currentIndex += 4;
-      displayWords();
-    }
-  });
-
-  backToHomeButton.addEventListener("click", function () {
-    window.location.href = "index.html";
-  });
-
-  const themeCheckbox = document.getElementById("theme-toggle");
-  themeCheckbox.addEventListener("change", function () {
-    if (this.checked) {
-      document.documentElement.setAttribute("data-theme", "dark");
-      localStorage.setItem("theme", "dark");
-      document.querySelector(".theme-switch label").innerHTML = "☀️";
     } else {
-      document.documentElement.removeAttribute("data-theme");
-      localStorage.setItem("theme", "light");
-      document.querySelector(".theme-switch label").innerHTML = "🌙";
+      console.error("No words received from server");
     }
-  });
+  } catch (error) {
+    console.error("Fetch error:", error);
+  }
+}
 
-  if (
+function displayWords() {
+  const wordsContainer = document.getElementById("words-container");
+  const dropContainer = document.getElementById("drop-container");
+  wordsContainer.innerHTML = "";
+  dropContainer.innerHTML = "";
+
+  const currentWords = words.slice(currentIndex, currentIndex + WORDS_PER_PAGE);
+  currentWords.forEach((word) => createWordCard(word, wordsContainer));
+
+  const translations = currentWords.map((word) => ({
+    translation: word.translation || "No translation available",
+    correctWord: word.word,
+  }));
+
+  shuffleArray(translations).forEach((translation) => {
+    createTranslationCard(translation, dropContainer);
+  });
+}
+
+function createWordCard(word, container) {
+  const card = document.createElement("div");
+  card.className = "word-card";
+  card.textContent = word.word;
+  card.setAttribute("draggable", "true");
+  card.addEventListener("dragstart", dragStart);
+  container.appendChild(card);
+}
+
+function createTranslationCard(translation, container) {
+  const card = document.createElement("div");
+  card.className = "icon-card";
+  card.textContent = translation.translation;
+  card.dataset.translation = translation.correctWord;
+  card.addEventListener("dragover", (e) => e.preventDefault());
+  card.addEventListener("drop", handleDrop);
+  container.appendChild(card);
+}
+
+function dragStart(event) {
+  draggedWord = event.target;
+}
+
+function handleDrop(event) {
+  event.preventDefault();
+  if (!draggedWord) return;
+
+  const translationCard = event.target;
+  const draggedWordText = draggedWord.textContent.trim();
+  const correctTranslation = translationCard.dataset.translation;
+
+  if (correctTranslation === draggedWordText) {
+    handleCorrectMatch(translationCard, draggedWord);
+    correctCount++;
+  } else {
+    handleIncorrectMatch(translationCard, draggedWord);
+    incorrectCount++;
+  }
+
+  draggedWord = null;
+  updateScoreboard();
+}
+
+function handleCorrectMatch(translationCard, wordCard) {
+  translationCard.style.backgroundColor = "#036932";
+  wordCard.style.backgroundColor = "#036932";
+  wordCard.setAttribute("draggable", "false");
+  translationCard.classList.add("matched");
+}
+
+function handleIncorrectMatch(translationCard, wordCard) {
+  translationCard.style.backgroundColor = "#f50000";
+  wordCard.style.backgroundColor = "#f50000";
+  setTimeout(() => {
+    translationCard.style.backgroundColor = "";
+    wordCard.style.backgroundColor = "";
+  }, 1000);
+}
+
+function showPreviousWords() {
+  if (currentIndex > 0) {
+    currentIndex -= WORDS_PER_PAGE;
+    displayWords();
+  }
+}
+
+function showNextWords() {
+  if (currentIndex + WORDS_PER_PAGE < words.length) {
+    currentIndex += WORDS_PER_PAGE;
+    displayWords();
+  }
+}
+
+function updateScoreboard() {
+  document.getElementById("correctCount").textContent = correctCount;
+  document.getElementById("incorrectCount").textContent = incorrectCount;
+}
+
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+  return array;
+}
+
+function initializeDarkMode() {
+  const themeToggle = document.getElementById("theme-toggle");
+  const themeLabel = document.querySelector(".theme-switch label");
+
+  if (!themeToggle || !themeLabel) return;
+
+  const isDarkMode =
     localStorage.getItem("theme") === "dark" ||
     (window.matchMedia("(prefers-color-scheme: dark)").matches &&
-      !localStorage.getItem("theme"))
-  ) {
-    themeCheckbox.checked = true;
+      !localStorage.getItem("theme"));
+
+  if (isDarkMode) {
+    themeToggle.checked = true;
     document.documentElement.setAttribute("data-theme", "dark");
-    document.querySelector(".theme-switch label").innerHTML = "☀️";
+    themeLabel.innerHTML = "☀️";
   }
+}
 
-  fetchWords(languageDropdown.value);
-});
+function toggleTheme() {
+  const themeToggle = document.getElementById("theme-toggle");
+  const themeLabel = document.querySelector(".theme-switch label");
 
-function initializeDarkMode() {}
+  if (!themeToggle || !themeLabel) return;
+
+  if (themeToggle.checked) {
+    document.documentElement.setAttribute("data-theme", "dark");
+    localStorage.setItem("theme", "dark");
+    themeLabel.innerHTML = "☀️";
+  } else {
+    document.documentElement.removeAttribute("data-theme");
+    localStorage.setItem("theme", "light");
+    themeLabel.innerHTML = "🌙";
+  }
+}
