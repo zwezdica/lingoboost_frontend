@@ -1,4 +1,3 @@
-
 const TESTIMONIALS_DATA = [
   {
     id: 1,
@@ -80,23 +79,17 @@ const NAV_ITEMS = [
   { href: "dictionary.html", icon: "fa-book", text: "Dictionary" },
 ];
 
-
 document.addEventListener("DOMContentLoaded", async () => {
   const app = document.getElementById("app");
 
-  
   emailjs.init("LEzidInbrwbSSGvkt");
 
-  
   createLoadingIndicator(app);
 
-  
   createHeader(app);
 
-  
   setupTheme();
 
-  
   createIntroSection(app);
   createAnimationImage(app);
   createLoginForm(app);
@@ -105,41 +98,32 @@ document.addEventListener("DOMContentLoaded", async () => {
   createContactForm(app);
   createFooter(app);
 
-  
   checkAuthState();
 
-  
   document.getElementById("loading")?.remove();
 });
-
 
 function setupEventListeners() {
   document
     .getElementById("themeToggle")
     ?.addEventListener("click", toggleTheme);
 
-  
   document.getElementById("loginForm")?.addEventListener("submit", handleLogin);
 
-  
   document.getElementById("registerBtn")?.addEventListener("click", () => {
     window.location.href = "register.html";
   });
 
-  
   document.getElementById("logoutBtn")?.addEventListener("click", handleLogout);
 
-  
   document
     .getElementById("contactForm")
     ?.addEventListener("submit", handleContactSubmit);
 
-  
   document.getElementById("closeModal")?.addEventListener("click", () => {
     document.getElementById("successModal").style.display = "none";
   });
 }
-
 
 function createLoadingIndicator(parent) {
   const loading = document.createElement("div");
@@ -151,20 +135,17 @@ function createLoadingIndicator(parent) {
 function createHeader(parent) {
   const header = document.createElement("header");
 
-  
   const themeToggle = document.createElement("button");
   themeToggle.id = "themeToggle";
   themeToggle.className = "theme-toggle";
   themeToggle.innerHTML = '<i class="fas fa-moon"></i>';
   header.appendChild(themeToggle);
 
-  
   const logo = document.createElement("h1");
   logo.className = "logo";
   logo.innerHTML = '<i class="fas fa-comment"></i> LingoBoost';
   header.appendChild(logo);
 
-  
   const nav = document.createElement("nav");
   const navList = document.createElement("ul");
   navList.className = "nav-list";
@@ -196,7 +177,6 @@ function createHeader(parent) {
   nav.appendChild(navList);
   header.appendChild(nav);
 
-  
   const userInfo = document.createElement("div");
   userInfo.className = "user-info";
   userInfo.id = "userInfo";
@@ -399,7 +379,6 @@ function createFooter(parent) {
   parent.appendChild(footer);
 }
 
-
 function setupTheme() {
   const savedTheme = localStorage.getItem("theme") || "light";
   document.documentElement.setAttribute("data-theme", savedTheme);
@@ -427,7 +406,6 @@ function updateThemeToggleIcon(theme) {
     theme === "dark" ? "Switch to light mode" : "Switch to dark mode";
 }
 
-
 function checkAuthState() {
   const token = localStorage.getItem("token");
   const role = localStorage.getItem("role") || "user";
@@ -446,11 +424,14 @@ async function handleLogin(e) {
   const password = document.getElementById("loginPassword").value;
 
   try {
-    const res = await fetch("http://localhost:5000/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username: usernameInput, password }),
-    });
+    const res = await fetch(
+      "https://lingoboost-backend.onrender.com/api/auth/login",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username: usernameInput, password }),
+      }
+    );
 
     const data = await res.json();
 
@@ -514,7 +495,6 @@ function showLoginUI() {
   if (adminLink) adminLink.style.display = "none";
 }
 
-
 function handleContactSubmit(event) {
   event.preventDefault();
 
@@ -539,7 +519,6 @@ function handleContactSubmit(event) {
       }
     );
 }
-
 
 function initCarousel(carouselElement) {
   const container = carouselElement.querySelector(".carousel-container");
@@ -631,6 +610,5 @@ function initCarousel(carouselElement) {
   setupEventListeners();
   startInterval();
 }
-
 
 document.addEventListener("DOMContentLoaded", setupEventListeners);

@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api/words";
+const API_URL = "https://lingoboost-backend.onrender.com/api/words";
 const LANGUAGES = [
   { value: "fr", text: "French" },
   { value: "es", text: "Spanish" },

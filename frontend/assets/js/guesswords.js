@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api/guessWords";
+const API_URL = "https://lingoboost-backend.onrender.com/api/guessWords";
 const LANGUAGES = [
   { value: "fr", text: "Français" },
   { value: "es", text: "Español" },
@@ -106,7 +106,7 @@ function initializeUI() {
 async function fetchKeyboard(language) {
   try {
     const response = await fetch(
-      `http://localhost:5000/api/keyboards/${language}`
+      `https://lingoboost-backend.onrender.com/api/keyboards/${language}`
     );
     const data = await response.json();
 

@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api/bingo";
+const API_URL = "https://lingoboost-backend.onrender.com/api/bingo";
 const DIFFICULTIES = [
   { value: "easy", text: "Easy" },
   { value: "medium", text: "Medium" },

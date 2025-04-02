@@ -1,5 +1,5 @@
 const API_ENDPOINTS = {
-  QUIZZES: "http://localhost:5000/api/quizzes",
+  QUIZZES: "https://lingoboost-backend.onrender.com/api/quizzes",
 };
 
 const LANGUAGES = [
@@ -36,7 +36,6 @@ function setupQuizUI() {
 
   quizContainer.innerHTML = createQuizHTML();
 
-
   const languageSelector = document.getElementById("language-selector");
   LANGUAGES.forEach((lang) => {
     const option = document.createElement("option");
@@ -45,7 +44,6 @@ function setupQuizUI() {
     languageSelector.appendChild(option);
   });
 
-  // Add theme toggle at the bottom
   quizContainer.appendChild(createThemeToggle());
 }
 
@@ -162,7 +160,6 @@ function handleThemeToggle() {
 
   window.dispatchEvent(new CustomEvent("themeChanged"));
 }
-
 
 async function startQuiz() {
   if (!state.selectedLanguage) {

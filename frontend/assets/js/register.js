@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api/auth";
+const API_URL = "https://lingoboost-backend.onrender.com/api/auth";
 const PASSWORD_REQUIREMENTS = {
   minLength: 8,
   needsUppercase: true,

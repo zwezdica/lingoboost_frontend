@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api/admin";
+const API_URL = "https://lingoboost-backend.onrender.com/api/admin";
 const ITEMS_PER_PAGE = 6;
 
 let currentUserPage = 1;
