@@ -13,7 +13,7 @@ const LANGUAGE_VOICES = {
 };
 
 let currentPage = 1;
-let selectedLanguage = "fr";
+let selectedLanguage = localStorage.getItem("selectedLanguage") || "fr";
 
 document.addEventListener("DOMContentLoaded", () => {
   checkAuthStatus();
@@ -60,6 +60,16 @@ function checkAuthStatus() {
 function initializeUI() {
   const app = document.getElementById("app");
 
+  const iconContainer = document.createElement("div");
+  iconContainer.className = "icon-container";
+  iconContainer.innerHTML = `
+     <svg viewBox="0 0 24 24" width="24" height="24">
+  <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+</svg>
+  `;
+  iconContainer.style.display = "none";
+  app.appendChild(iconContainer);
+
   const themeToggle = document.createElement("div");
   themeToggle.className = "theme-switch";
   themeToggle.innerHTML = `
@@ -95,6 +105,7 @@ function initializeUI() {
     const option = document.createElement("option");
     option.value = lang.value;
     option.textContent = lang.text;
+    option.selected = lang.value === selectedLanguage;
     languageSelector.appendChild(option);
   });
   flashcardsContainer.appendChild(languageSelector);

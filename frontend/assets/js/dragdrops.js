@@ -18,7 +18,13 @@ document.addEventListener("DOMContentLoaded", () => {
   initializeUI();
   initializeDarkMode();
   setupEventListeners();
-  fetchWords(document.getElementById("languageDropdown").value);
+
+  setTimeout(() => {
+    const languageDropdown = document.getElementById("languageDropdown");
+    if (languageDropdown) {
+      fetchWords(languageDropdown.value);
+    }
+  }, 0);
 });
 
 function setupEventListeners() {
@@ -53,6 +59,17 @@ function checkAuthStatus() {
 
 function initializeUI() {
   const app = document.getElementById("app");
+  const savedLanguage = localStorage.getItem("selectedLanguage") || "fr";
+
+  const iconContainer = document.createElement("div");
+  iconContainer.className = "icon-container";
+  iconContainer.innerHTML = `
+     <svg viewBox="0 0 24 24" width="24" height="24">
+  <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+</svg>
+  `;
+  iconContainer.style.display = "none";
+  app.appendChild(iconContainer);
 
   const themeToggle = document.createElement("div");
   themeToggle.className = "theme-switch";
@@ -77,6 +94,7 @@ function initializeUI() {
     const option = document.createElement("option");
     option.value = lang.value;
     option.textContent = lang.text;
+    option.selected = lang.value === savedLanguage;
     languageDropdown.appendChild(option);
   });
   gameContainer.appendChild(languageDropdown);
@@ -142,6 +160,9 @@ async function fetchWords(language) {
     if (Array.isArray(data) && data.length > 0) {
       words = data;
       currentIndex = 0;
+      correctCount = 0;
+      incorrectCount = 0;
+      updateScoreboard();
       displayWords();
     } else {
       console.error("No words received from server");
@@ -154,6 +175,9 @@ async function fetchWords(language) {
 function displayWords() {
   const wordsContainer = document.getElementById("words-container");
   const dropContainer = document.getElementById("drop-container");
+
+  if (!wordsContainer || !dropContainer) return;
+
   wordsContainer.innerHTML = "";
   dropContainer.innerHTML = "";
 
@@ -184,20 +208,27 @@ function createTranslationCard(translation, container) {
   card.className = "icon-card";
   card.textContent = translation.translation;
   card.dataset.translation = translation.correctWord;
-  card.addEventListener("dragover", (e) => e.preventDefault());
+  card.addEventListener("dragover", allowDrop);
   card.addEventListener("drop", handleDrop);
   container.appendChild(card);
 }
 
+function allowDrop(event) {
+  event.preventDefault();
+}
+
 function dragStart(event) {
   draggedWord = event.target;
+  event.dataTransfer.setData("text/plain", event.target.textContent);
 }
 
 function handleDrop(event) {
   event.preventDefault();
   if (!draggedWord) return;
 
-  const translationCard = event.target;
+  const translationCard = event.target.closest(".icon-card");
+  if (!translationCard) return;
+
   const draggedWordText = draggedWord.textContent.trim();
   const correctTranslation = translationCard.dataset.translation;
 
@@ -218,6 +249,9 @@ function handleCorrectMatch(translationCard, wordCard) {
   wordCard.style.backgroundColor = "#036932";
   wordCard.setAttribute("draggable", "false");
   translationCard.classList.add("matched");
+
+  translationCard.ondragover = null;
+  translationCard.ondrop = null;
 }
 
 function handleIncorrectMatch(translationCard, wordCard) {

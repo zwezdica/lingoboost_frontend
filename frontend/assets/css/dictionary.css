@@ -18,7 +18,7 @@
   --bg-secondary: #fbc16b;
   --border: #e8d5b5;
   --white: #ffffff;
-  --shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.08);
 
   --dark-primary: #8c6b4f;
   --dark-primary-light: #3a2e21;
@@ -56,15 +56,15 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  padding: 40px 20px;
-  font-size: 18px;
+  padding: 2.5rem 1.25rem;
+  font-size: 1.125rem;
   line-height: 1.8;
 }
 
 .theme-switch {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: 1.25rem;
+  right: 1.25rem;
   z-index: 100;
 }
 
@@ -74,13 +74,13 @@ body {
 
 .theme-switch label {
   cursor: pointer;
-  padding: 8px;
+  padding: 0.5rem;
   background: var(--primary-dark);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 0.3125rem rgba(0, 0, 0, 0.2);
   transition: all 0.3s;
 }
 
@@ -90,11 +90,11 @@ body {
 
 .container {
   width: 200vh;
-  max-width: 1000px;
+  max-width: 62.5rem;
   height: auto;
   background: var(--bg);
-  padding: 30px 40px;
-  border-radius: 12px;
+  padding: 1.875rem 2.5rem;
+  border-radius: 0.75rem;
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
@@ -106,48 +106,48 @@ body {
 
 h1 {
   text-align: center;
-  font-size: 32px;
+  font-size: 2rem;
   font-weight: 700;
 }
 
 .search-form {
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 1.5625rem;
   width: 100%;
 }
 
 .input-group {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 0.9375rem;
 }
 
 input,
 select {
   width: 100%;
-  padding: 14px 18px;
-  font-size: 18px;
+  padding: 0.875rem 1.125rem;
+  font-size: 1.125rem;
   background-color: var(--bg-secondary);
   border: 2px solid var(--border);
-  border-radius: 10px;
+  border-radius: 0.625rem;
   color: var(--text);
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 }
 
 #searchButton {
   display: inline-block;
-  padding: 12px 20px;
-  font-size: 18px;
+  padding: 0.75rem 1.25rem;
+  font-size: 1.125rem;
   cursor: pointer;
   background-color: var(--primary);
   color: var(--white);
   border: none;
-  border-radius: 8px;
+  border-radius: 0.5rem;
   font-weight: bold;
   transition: all 0.3s;
-  margin: 10px 0;
+  margin: 0.625rem 0;
   width: auto;
   white-space: nowrap;
 }
@@ -155,17 +155,17 @@ select {
 #searchButton:hover {
   background-color: var(--bg);
   color: var(--text);
-  transform: translateY(-2px);
+  transform: translateY(-0.125rem);
 }
-/* Results */
+
 #result {
   width: 100%;
 }
 
 .result-card {
-  padding: 25px;
-  border-radius: 10px;
-  font-size: 18px;
+  padding: 1.5625rem;
+  border-radius: 0.625rem;
+  font-size: 1.125rem;
   font-weight: bold;
   background-color: var(--bg-secondary);
   box-shadow: var(--shadow);
@@ -174,15 +174,15 @@ select {
 #backToHomeButton {
   display: inline-block;
   width: auto;
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 0.625rem 1.25rem;
+  font-size: 1rem;
   font-weight: bold;
   background-color: var(--primary);
   color: var(--white);
   cursor: pointer;
   border: none;
-  border-radius: 8px;
-  margin-top: 20px;
+  border-radius: 0.5rem;
+  margin-top: 1.25rem;
   transition: background-color 0.3s;
 }
 
@@ -193,132 +193,152 @@ select {
 
 @media (max-width: 575.98px) {
   body {
-    padding: 20px 15px;
-    font-size: 16px;
+    padding: 1.25rem 0.9375rem;
+    font-size: 1rem;
   }
 
   .container {
     width: 100%;
-    padding: 20px;
+    padding: 1.25rem;
   }
 
   h1 {
-    font-size: 24px;
+    font-size: 1.5rem;
   }
 
   .search-form {
-    gap: 15px;
+    gap: 0.9375rem;
   }
 
   input,
   select {
-    padding: 12px 15px;
-    font-size: 16px;
-    margin-bottom: 15px;
+    padding: 0.75rem 0.9375rem;
+    font-size: 1rem;
+    margin-bottom: 0.9375rem;
   }
 
   #searchButton {
-    padding: 12px;
-    font-size: 16px;
+    padding: 0.75rem;
+    font-size: 1rem;
     width: 100%;
   }
 
   .result-card {
-    padding: 15px;
-    font-size: 16px;
-  }
-
-  .result-card h2 {
-    font-size: 20px;
+    padding: 0.9375rem;
+    font-size: 1rem;
   }
 
   #backToHomeButton {
     width: 100%;
-    padding: 12px;
-    font-size: 16px;
+    padding: 0.75rem;
+    font-size: 1rem;
   }
 }
 
-@media (min-width: 576px) and (max-width: 767.98px) {
+@media (max-width: 767.98px) and (orientation: landscape) {
   body {
-    padding: 25px;
-  }
-
-  .container {
-    width: 95%;
-    padding: 25px;
-  }
-
-  h1 {
-    font-size: 26px;
-  }
-
-  input,
-  select {
-    padding: 12px 16px;
-  }
-
-  #searchButton {
-    padding: 12px 18px;
-  }
-}
-
-@media (min-width: 768px) and (max-width: 991.98px) {
-  .container {
-    width: 90%;
-    padding: 30px;
-  }
-
-  h1 {
-    font-size: 28px;
-  }
-}
-
-@media (orientation: landscape) and (max-width: 991.98px) {
-  body {
-    padding: 15px;
+    padding: 0.9375rem;
   }
 
   .container {
     max-height: 90vh;
     overflow-y: auto;
   }
+}
 
-  .search-form {
-    gap: 15px;
+@media (min-width: 576px) {
+  body {
+    padding: 1.5625rem;
+  }
+
+  .container {
+    width: 95%;
+    padding: 1.5625rem;
+  }
+
+  h1 {
+    font-size: 1.625rem;
   }
 
   input,
   select {
-    padding: 10px 14px;
+    padding: 0.75rem 1rem;
   }
 
   #searchButton {
-    padding: 10px 16px;
+    padding: 0.75rem 1.125rem;
+    width: auto;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) and (orientation: landscape) {
+  .search-form {
+    gap: 0.9375rem;
+  }
+
+  input,
+  select {
+    padding: 0.625rem 0.875rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    width: 90%;
+    padding: 1.875rem;
+  }
+
+  h1 {
+    font-size: 1.75rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) and (orientation: landscape) {
+  .container {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    width: 85%;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    width: 80%;
   }
 }
 
 @media (max-height: 600px) {
   body {
-    padding: 15px;
+    padding: 0.9375rem;
   }
 
   .container {
-    padding: 20px;
+    padding: 1.25rem;
   }
 
   h1 {
-    margin-bottom: 10px;
-    font-size: 22px;
+    margin-bottom: 0.625rem;
+    font-size: 1.375rem;
   }
 
   .search-form {
-    gap: 10px;
+    gap: 0.625rem;
   }
 
   input,
   select {
-    padding: 10px 12px;
-    margin-bottom: 10px;
+    padding: 0.625rem 0.75rem;
+    margin-bottom: 0.625rem;
+  }
+}
+
+@media (min-height: 1000px) {
+  .container {
+    margin-top: 5vh;
   }
 }

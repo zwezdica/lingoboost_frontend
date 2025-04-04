@@ -12,7 +12,7 @@ const LANGUAGES = [
 const state = {
   currentQuestionIndex: 0,
   questions: [],
-  selectedLanguage: "fr",
+  selectedLanguage: localStorage.getItem("selectedLanguage") || "fr",
   correctAnswers: 0,
   totalQuestions: 0,
 };
@@ -23,10 +23,16 @@ document.addEventListener("DOMContentLoaded", () => {
   initializeDarkMode();
   setupEventListeners();
 
-  // Sync theme across tabs
   window.addEventListener("storage", (event) => {
     if (event.key === "theme") {
       initializeDarkMode();
+    }
+    if (event.key === "selectedLanguage") {
+      state.selectedLanguage = localStorage.getItem("selectedLanguage") || "fr";
+      const languageSelector = document.getElementById("language-selector");
+      if (languageSelector) {
+        languageSelector.value = state.selectedLanguage;
+      }
     }
   });
 });
@@ -34,7 +40,17 @@ document.addEventListener("DOMContentLoaded", () => {
 function setupQuizUI() {
   const quizContainer = document.getElementById("quiz-container");
 
-  quizContainer.innerHTML = createQuizHTML();
+  const iconContainer = document.createElement("div");
+  iconContainer.className = "icon-container";
+  iconContainer.innerHTML = `
+     <svg viewBox="0 0 24 24" width="24" height="24">
+  <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+</svg>
+  `;
+  iconContainer.style.display = "none";
+  quizContainer.appendChild(iconContainer);
+
+  quizContainer.innerHTML += createQuizHTML();
 
   const languageSelector = document.getElementById("language-selector");
   LANGUAGES.forEach((lang) => {
@@ -44,6 +60,7 @@ function setupQuizUI() {
     languageSelector.appendChild(option);
   });
 
+  languageSelector.value = state.selectedLanguage;
   quizContainer.appendChild(createThemeToggle());
 }
 
@@ -95,17 +112,22 @@ function setupEventListeners() {
   document
     .getElementById("theme-toggle")
     ?.addEventListener("change", handleThemeToggle);
+
   document
     .getElementById("language-selector")
     ?.addEventListener("change", (e) => {
       state.selectedLanguage = e.target.value;
+      localStorage.setItem("selectedLanguage", state.selectedLanguage);
     });
+
   document
     .getElementById("start-quiz-btn")
     ?.addEventListener("click", startQuiz);
+
   document
     .getElementById("next-btn")
     ?.addEventListener("click", showNextQuestion);
+
   document
     .getElementById("prev-btn")
     ?.addEventListener("click", showPreviousQuestion);

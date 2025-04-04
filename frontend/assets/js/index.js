@@ -1,3 +1,10 @@
+const LANGUAGES = [
+  { value: "fr", text: "Français" },
+  { value: "es", text: "Español" },
+  { value: "de", text: "Deutsch" },
+  { value: "it", text: "Italiano" },
+];
+
 const TESTIMONIALS_DATA = [
   {
     id: 1,
@@ -85,12 +92,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   emailjs.init("LEzidInbrwbSSGvkt");
 
   createLoadingIndicator(app);
-
   createHeader(app);
-
   setupTheme();
-
   createIntroSection(app);
+  createLanguageSelector(app);
   createAnimationImage(app);
   createLoginForm(app);
   createTestimonialsSection(app);
@@ -99,30 +104,54 @@ document.addEventListener("DOMContentLoaded", async () => {
   createFooter(app);
 
   checkAuthState();
+  setupEventListeners();
 
   document.getElementById("loading")?.remove();
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const backToTopButton = document.createElement("div");
+  backToTopButton.className = "back-to-top";
+  backToTopButton.innerHTML = "↑";
+  document.body.appendChild(backToTopButton);
+
+  window.addEventListener("scroll", function () {
+    if (window.pageYOffset > 300) {
+      backToTopButton.classList.add("visible");
+    } else {
+      backToTopButton.classList.remove("visible");
+    }
+  });
+
+  backToTopButton.addEventListener("click", function () {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
 });
 
 function setupEventListeners() {
   document
     .getElementById("themeToggle")
     ?.addEventListener("click", toggleTheme);
-
   document.getElementById("loginForm")?.addEventListener("submit", handleLogin);
-
   document.getElementById("registerBtn")?.addEventListener("click", () => {
     window.location.href = "register.html";
   });
-
   document.getElementById("logoutBtn")?.addEventListener("click", handleLogout);
-
   document
     .getElementById("contactForm")
     ?.addEventListener("submit", handleContactSubmit);
-
   document.getElementById("closeModal")?.addEventListener("click", () => {
     document.getElementById("successModal").style.display = "none";
   });
+
+  document
+    .getElementById("languageSelector")
+    ?.addEventListener("change", (e) => {
+      localStorage.setItem("selectedLanguage", e.target.value);
+    });
 }
 
 function createLoadingIndicator(parent) {
@@ -206,11 +235,50 @@ The fun way to learn – no textbooks needed!</p>
   `;
   parent.appendChild(intro);
 }
+function createLanguageSelector(parent) {
+  const languageContainer = document.createElement("div");
+  languageContainer.className = "language-selector-container visible";
+  languageContainer.id = "languageSelectorContainer";
+
+  const languageIcon = document.createElement("div");
+  languageIcon.className = "language-icon";
+  languageIcon.innerHTML = `
+    <svg viewBox="0 0 24 24" width="24" height="24">
+  <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+</svg>
+  `;
+  languageContainer.appendChild(languageIcon);
+
+  const label = document.createElement("label");
+  label.textContent =
+    "Choose your language for gaming and start learning the fun way!";
+  label.htmlFor = "languageSelector";
+  languageContainer.appendChild(label);
+
+  const languageSelector = document.createElement("select");
+  languageSelector.id = "languageSelector";
+  languageSelector.className = "language-selector";
+
+  const savedLanguage =
+    localStorage.getItem("selectedLanguage") || LANGUAGES[0].value;
+
+  LANGUAGES.forEach((lang) => {
+    const option = document.createElement("option");
+    option.value = lang.value;
+    option.textContent = lang.text;
+    option.selected = lang.value === savedLanguage;
+    languageSelector.appendChild(option);
+  });
+
+  languageContainer.appendChild(languageSelector);
+  parent.appendChild(languageContainer);
+}
 
 function createAnimationImage(parent) {
   const animationImg = document.createElement("img");
   animationImg.src = "./assets/img/animation.gif";
   animationImg.alt = "animation";
+  animationImg.className = "animation-image";
   parent.appendChild(animationImg);
 }
 
@@ -468,11 +536,13 @@ function showLoggedInUI(role, username) {
   const logoutBtn = document.getElementById("logoutBtn");
   const usernameElement = document.getElementById("username");
   const adminLink = document.getElementById("adminLink");
+  const languageSelector = document.getElementById("languageSelectorContainer");
 
   if (loginForm) loginForm.style.display = "none";
   if (registerBtn) registerBtn.style.display = "none";
   if (userInfo) userInfo.style.display = "block";
   if (logoutBtn) logoutBtn.style.display = "block";
+  if (languageSelector) languageSelector.style.display = "block";
 
   if (usernameElement) usernameElement.textContent = displayUsername;
 
@@ -487,12 +557,14 @@ function showLoginUI() {
   const userInfo = document.getElementById("userInfo");
   const logoutBtn = document.getElementById("logoutBtn");
   const adminLink = document.getElementById("adminLink");
+  const languageSelector = document.getElementById("languageSelectorContainer");
 
   if (loginForm) loginForm.style.display = "block";
   if (registerBtn) registerBtn.style.display = "block";
   if (userInfo) userInfo.style.display = "none";
   if (logoutBtn) logoutBtn.style.display = "none";
   if (adminLink) adminLink.style.display = "none";
+  if (languageSelector) languageSelector.style.display = "none";
 }
 
 function handleContactSubmit(event) {
@@ -610,5 +682,3 @@ function initCarousel(carouselElement) {
   setupEventListeners();
   startInterval();
 }
-
-document.addEventListener("DOMContentLoaded", setupEventListeners);

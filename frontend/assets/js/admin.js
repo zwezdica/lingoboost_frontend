@@ -98,9 +98,18 @@ function showNotificationModal(options) {
 
   return new Promise((resolve) => {
     const modal = document.createElement("div");
+    const iconContainer = document.createElement("div");
+    iconContainer.className = "modal-icon";
+    iconContainer.innerHTML = `
+    <svg viewBox="0 0 24 24" width="40" height="40">
+        <rect width="24" height="24" fill="transparent"/>
+        <path fill="transparent" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+    </svg>
+    `;
     modal.className = "modal";
     modal.innerHTML = `
       <div class="modal-content ${options.type || "info"}">
+        ${iconContainer.outerHTML}
         <h3 class="modal-title">${options.title}</h3>
         <p class="modal-message">${options.message}</p>
         <div class="modal-buttons">
@@ -174,7 +183,20 @@ function showError(message) {
 }
 
 function initializeAdminPanel() {
-  document.body.innerHTML = `
+  const app = document.getElementById("app") || document.body;
+  
+
+  const iconContainer = document.createElement("div");
+  iconContainer.className = "icon-container";
+  iconContainer.innerHTML = `
+     <svg viewBox="0 0 24 24" width="24" height="24">
+       <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+     </svg>
+  `;
+  iconContainer.style.display = "none";
+  app.appendChild(iconContainer);
+
+  app.innerHTML = `
     <div class="container">
       <h1>Admin Panel</h1>
       <button id="back-to-home-button">Back to Home</button>
@@ -377,7 +399,6 @@ async function handleDeleteUser(e) {
     return;
   }
 
-  // Remove "ID: " prefix if present
   const cleanUserId = userId.replace(/^ID:\s*/i, "");
 
   const confirmed = await showConfirmationModal({

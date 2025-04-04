@@ -17,7 +17,7 @@
   --bg-secondary: #fbc16b;
   --border: #e8d5b5;
   --white: #ffffff;
-  --shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  --shadow: 0 0.25rem 0.5rem rgba(0, 0, 0, 0.2);
   --card-bg: rgba(255, 255, 255, 0.4);
 
   --dark-primary: #8c6b4f;
@@ -57,34 +57,38 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 
 .container {
   background-color: var(--bg-secondary);
   border: 1px solid var(--border);
-  border-radius: 8px;
+  border-radius: 0.5rem;
   box-shadow: var(--shadow);
-  padding: 20px;
-  max-width: 400px;
+  padding: 1.25rem;
+  max-width: 25rem;
   width: 90%;
-  margin: 50px auto;
+  margin: 3.125rem auto;
 }
 
 h1 {
   color: var(--text-light);
-  margin-bottom: 30px;
+  margin-bottom: 1.875rem;
   text-align: center;
+  font-size: 1.75rem;
 }
 
 form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 0.625rem;
 }
 
 form label {
   font-weight: bold;
   color: var(--text-light);
+  font-size: 1rem;
 }
 
 input,
@@ -93,9 +97,10 @@ textarea {
   background: var(--bg);
   border: 1px solid var(--border);
   color: var(--text);
-  padding: 10px;
-  border-radius: 6px;
+  padding: 0.625rem;
+  border-radius: 0.375rem;
   transition: all 0.3s;
+  font-size: 1rem;
 }
 
 input:focus,
@@ -103,25 +108,26 @@ select:focus,
 textarea:focus {
   outline: none;
   border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(255, 152, 0, 0.3);
+  box-shadow: 0 0 0 0.125rem rgba(255, 152, 0, 0.3);
 }
 
 button {
   background-color: var(--primary);
   color: var(--white);
   border: none;
-  padding: 10px 20px;
-  border-radius: 6px;
+  padding: 0.625rem 1.25rem;
+  border-radius: 0.375rem;
   cursor: pointer;
   font-weight: bold;
   transition: all 0.3s;
-  margin: 10px 0;
+  margin: 0.625rem 0;
+  font-size: 1rem;
 }
 
 button:hover {
   background-color: var(--bg-secondary);
   color: var(--text-light);
-  transform: translateY(-2px);
+  transform: translateY(-0.125rem);
 }
 
 button:disabled {
@@ -135,24 +141,24 @@ button:disabled {
   text-decoration: none;
   font-weight: bold;
   color: var(--text);
+  font-size: 1rem;
 }
 
 .loginLink:hover {
   color: var(--primary-dark);
 }
 
-/* Password Validation Styles */
 #password-strength {
-  margin: 10px 0;
-  padding: 10px;
+  margin: 0.625rem 0;
+  padding: 0.625rem;
   background-color: var(--card-bg);
-  border-radius: 5px;
+  border-radius: 0.3125rem;
   border: 1px solid var(--border);
 }
 
 .requirement {
   color: var(--text-light);
-  margin: 5px 0;
+  margin: 0.3125rem 0;
   font-size: 0.9rem;
   transition: all 0.3s ease;
 }
@@ -164,7 +170,7 @@ button:disabled {
 
 .requirement:before {
   content: "○";
-  margin-right: 8px;
+  margin-right: 0.5rem;
 }
 
 .requirement.met:before {
@@ -173,8 +179,8 @@ button:disabled {
 
 .theme-switch {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 1.25rem;
+  right: 1.25rem;
   z-index: 100;
 }
 
@@ -184,14 +190,16 @@ button:disabled {
 
 .theme-switch label {
   cursor: pointer;
-  padding: 8px;
+  padding: 0.5rem;
   background: var(--primary-dark);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 0.3125rem rgba(0, 0, 0, 0.2);
   transition: all 0.3s;
+  width: 2.5rem;
+  height: 2.5rem;
 }
 
 .theme-switch label:hover {
@@ -201,55 +209,114 @@ button:disabled {
 @media (max-width: 575.98px) {
   .container {
     width: 95%;
-    margin: 20px auto;
-    padding: 15px;
+    margin: 1.25rem auto;
+    padding: 0.9375rem;
   }
 
   h1 {
     font-size: 1.5rem;
-    margin-bottom: 20px;
+    margin-bottom: 1.25rem;
   }
 
   #password-strength {
-    padding: 8px;
+    padding: 0.5rem;
   }
 
   .requirement {
     font-size: 0.8rem;
   }
-}
 
-@media (min-width: 576px) and (max-width: 767.98px) {
-  .container {
-    width: 90%;
-    margin: 30px auto;
+  button {
+    padding: 0.625rem 1.25rem;
   }
 }
 
-@media (min-width: 768px) and (max-width: 991.98px) {
+@media (max-width: 575.98px) and (orientation: landscape) {
   .container {
-    width: 85%;
-    margin: 40px auto;
-  }
-}
-
-@media (orientation: landscape) and (max-height: 576px) {
-  .container {
-    margin: 10px auto;
-    padding: 10px;
+    max-height: 95vh;
+    overflow-y: auto;
+    margin: 0.625rem auto;
+    padding: 0.625rem;
   }
 
   h1 {
     font-size: 1.3rem;
-    margin-bottom: 15px;
+    margin-bottom: 0.9375rem;
   }
 
   button {
-    padding: 8px 15px;
+    padding: 0.5rem 0.9375rem;
+  }
+}
+
+@media (min-width: 576px) {
+  .container {
+    width: 90%;
+    margin: 1.875rem auto;
+    padding: 1.25rem;
+  }
+}
+
+@media (min-width: 576px) and (max-width: 767.98px) and (orientation: portrait) {
+  h1 {
+    font-size: 1.7rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .container {
+    width: 85%;
+    margin: 2.5rem auto;
+    padding: 1.5625rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) and (orientation: landscape) {
+  .container {
+    max-height: 95vh;
+    overflow-y: auto;
+  }
+
+  form {
+    gap: 0.5rem;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    width: 80%;
+    max-width: 28.125rem;
+    padding: 1.875rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    width: 75%;
+    max-width: 31.25rem;
+    padding: 2.1875rem;
+  }
+}
+
+@media (max-height: 600px) {
+  .container {
+    margin: 0.625rem auto;
+    padding: 0.9375rem;
+  }
+
+  h1 {
+    font-size: 1.3rem;
+    margin-bottom: 0.9375rem;
   }
 
   #password-strength {
-    margin: 5px 0;
-    padding: 5px;
+    margin: 0.3125rem 0;
+    padding: 0.3125rem;
+  }
+}
+
+@media (min-height: 1000px) {
+  .container {
+    margin: 5vh auto;
   }
 }

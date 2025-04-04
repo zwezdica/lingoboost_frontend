@@ -17,7 +17,7 @@
   --bg-secondary: #fbc16b;
   --border: #e8d5b5;
   --white: #ffffff;
-  --shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  --shadow: 0 0.375rem 0.75rem rgba(0, 0, 0, 0.15);
 
   --dark-primary: #8c6b4f;
   --dark-primary-light: #3a2e21;
@@ -52,18 +52,18 @@ body {
   align-items: center;
   min-height: 100vh;
   text-align: center;
-  padding: 20px;
+  padding: 1.25rem;
   margin: 0;
   transition: all 0.3s ease;
 }
 
 #quiz-container {
   width: 200vh;
-  max-width: 1000px;
+  max-width: 62.5rem;
   height: auto;
   background: var(--bg);
-  padding: 30px 40px;
-  border-radius: 12px;
+  padding: 1.875rem 2.5rem;
+  border-radius: 0.75rem;
   box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
@@ -75,8 +75,8 @@ body {
 
 h2 {
   color: var(--text-light);
-  font-size: 24px;
-  margin-bottom: 20px;
+  font-size: 1.5rem;
+  margin-bottom: 1.25rem;
   font-weight: bold;
 }
 
@@ -86,20 +86,20 @@ h2 {
 }
 
 label {
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: bold;
-  margin-bottom: 20px;
-  margin-top: 10px;
+  margin-bottom: 1.25rem;
+  margin-top: 0.625rem;
   display: block;
   color: var(--primary-light);
 }
 
 select {
   width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  margin-bottom: 20px;
-  border-radius: 6px;
+  padding: 0.625rem;
+  font-size: 1rem;
+  margin-bottom: 1.25rem;
+  border-radius: 0.375rem;
   border: 2px solid var(--primary-dark);
   background: var(--primary-light);
   color: var(--text);
@@ -112,15 +112,15 @@ select:focus {
 }
 
 button {
-  padding: 10px 8px;
-  font-size: 16px;
+  padding: 0.625rem 0.5rem;
+  font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
   border: none;
   background-color: var(--primary-dark);
   color: var(--white);
-  border-radius: 6px;
-  margin: 5px;
+  border-radius: 0.375rem;
+  margin: 0.3125rem;
   transition: all 0.3s;
 }
 
@@ -137,13 +137,13 @@ button:disabled {
 .option-btn {
   display: block;
   width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  margin-bottom: 12px;
+  padding: 0.625rem;
+  font-size: 1rem;
+  margin-bottom: 0.75rem;
   background-color: var(--primary-light);
   color: var(--text);
   border: none;
-  border-radius: 6px;
+  border-radius: 0.375rem;
   cursor: pointer;
   transition: all 0.3s;
 }
@@ -161,14 +161,14 @@ button:disabled {
 
 .back-btn {
   display: inline-block;
-  font-size: 14px;
+  font-size: 0.875rem;
   font-weight: bold;
   color: var(--white);
   background: var(--primary-dark);
   border: 2px solid var(--bg-secondary);
-  border-radius: 6px;
-  padding: 8px 10px;
-  margin: 10px auto;
+  border-radius: 0.375rem;
+  padding: 0.5rem 0.625rem;
+  margin: 0.625rem auto;
   text-decoration: none;
   transition: all 0.3s;
   width: 17%;
@@ -182,14 +182,16 @@ button:disabled {
 .buttons {
   display: flex;
   justify-content: space-between;
-  margin-top: 20px;
+  margin-top: 1.25rem;
 }
+
 .buttons button {
   width: 48%;
-  max-width: 200px;
+  max-width: 12.5rem;
   border: 2px solid var(--primary-dark);
-  border-radius: 10px;
+  border-radius: 0.625rem;
 }
+
 #prev-btn {
   background-color: var(--primary);
 }
@@ -213,22 +215,22 @@ button:disabled {
 }
 
 #gif-container img {
-  max-width: 50px;
+  max-width: 3.125rem;
   display: block;
-  margin: 5px auto;
+  margin: 0.3125rem auto;
 }
 
 .question-box {
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: bold;
   color: var(--text-light);
-  margin-bottom: 15px;
+  margin-bottom: 0.9375rem;
 }
 
 .theme-switch {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 1.25rem;
+  right: 1.25rem;
   z-index: 100;
 }
 
@@ -238,13 +240,13 @@ button:disabled {
 
 .theme-switch label {
   cursor: pointer;
-  padding: 8px;
+  padding: 0.5rem;
   background: var(--primary-dark);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 0.3125rem rgba(0, 0, 0, 0.2);
   transition: all 0.3s;
 }
 
@@ -252,25 +254,25 @@ button:disabled {
   transform: scale(1.1);
 }
 
-@media (max-width: 575.98px) and (orientation: portrait) {
+@media (max-width: 575.98px) {
   .quiz-container {
     width: 95%;
-    padding: 20px 15px;
+    padding: 1.25rem 0.9375rem;
   }
 
   h2 {
-    font-size: 20px;
+    font-size: 1.25rem;
   }
 
   .option-btn,
   button {
-    padding: 8px;
-    font-size: 14px;
+    padding: 0.5rem;
+    font-size: 0.875rem;
   }
 
   .back-btn {
     width: 40%;
-    padding: 6px 8px;
+    padding: 0.375rem 0.5rem;
   }
 
   .buttons button {
@@ -278,10 +280,22 @@ button:disabled {
   }
 }
 
-@media (min-width: 576px) and (max-width: 767.98px) {
+@media (max-width: 575.98px) and (orientation: landscape) {
+  .quiz-container {
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .option-btn {
+    padding: 0.5rem 0.625rem;
+    margin-bottom: 0.5rem;
+  }
+}
+
+@media (min-width: 576px) {
   .quiz-container {
     width: 90%;
-    padding: 25px 30px;
+    padding: 1.5625rem 1.875rem;
   }
 
   .back-btn {
@@ -289,37 +303,55 @@ button:disabled {
   }
 }
 
-@media (min-width: 768px) and (max-width: 991.98px) {
+@media (min-width: 768px) {
   .quiz-container {
     width: 85%;
-    padding: 30px 35px;
+    padding: 1.875rem 2.1875rem;
   }
 }
 
-@media (orientation: landscape) and (max-width: 991.98px) {
+@media (min-width: 768px) and (max-width: 991.98px) and (orientation: landscape) {
   .quiz-container {
     max-height: 90vh;
     overflow-y: auto;
   }
+}
+
+@media (min-width: 992px) {
+  .quiz-container {
+    max-width: 56.25rem;
+    padding: 2.5rem;
+  }
+
+  h2 {
+    font-size: 2.25rem;
+    margin-bottom: 1.875rem;
+  }
 
   .option-btn {
-    padding: 8px 10px;
-    margin-bottom: 8px;
+    padding: 0.875rem;
+    font-size: 1.125rem;
+    margin-bottom: 0.875rem;
+  }
+
+  .buttons button {
+    padding: 0.875rem 1.75rem;
+    font-size: 1.125rem;
   }
 }
 
 @media (max-height: 600px) {
   .quiz-container {
-    padding: 15px 20px;
+    padding: 0.9375rem 1.25rem;
   }
 
   h2 {
-    margin-bottom: 10px;
-    font-size: 18px;
+    margin-bottom: 0.625rem;
+    font-size: 1.125rem;
   }
 
   .option-btn {
-    padding: 6px 8px;
-    margin-bottom: 8px;
+    padding: 0.375rem 0.5rem;
+    margin-bottom: 0.5rem;
   }
 }

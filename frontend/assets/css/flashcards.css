@@ -16,7 +16,7 @@
   --bg-secondary: #fbc16b;
   --border: #b85d03;
   --white: #ffffff;
-  --shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  --shadow: 0 0.375rem 0.75rem rgba(0, 0, 0, 0.15);
 
   --dark-primary: #8c6b4f;
   --dark-primary-light: #b48c69;
@@ -54,11 +54,11 @@ body {
 
 .flashcards {
   background-color: var(--bg);
-  border-radius: 12px;
-  padding: 20px;
+  border-radius: 0.75rem;
+  padding: 1.25rem;
   box-shadow: var(--shadow);
   width: 90%;
-  max-width: 900px;
+  max-width: 56.25rem;
   text-align: center;
   border: 1px solid var(--border);
 }
@@ -67,11 +67,11 @@ body {
   text-decoration: none;
   color: var(--white);
   font-size: 1rem;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
   display: inline-block;
   background: var(--primary-dark);
-  padding: 8px 16px;
-  border-radius: 6px;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
   transition: all 0.3s;
 }
 
@@ -86,19 +86,19 @@ label {
   color: var(--text-light);
   display: block;
   text-align: center;
-  margin: 10px auto 15px auto;
+  margin: 0.625rem auto 0.9375rem auto;
 }
 
 select {
-  padding: 10px;
+  padding: 0.625rem;
   font-size: 1rem;
-  border-radius: 6px;
+  border-radius: 0.375rem;
   border: 2px solid var(--primary-dark);
   background: var(--primary-light);
   color: var(--text);
   display: block;
-  margin: 0 auto 20px auto;
-  max-width: 300px;
+  margin: 0 auto 1.25rem auto;
+  max-width: 18.75rem;
   transition: all 0.3s;
 }
 
@@ -110,9 +110,10 @@ select:focus {
 .flashcards {
   background: var(--bg);
 }
+
 h2 {
   font-size: 2rem;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
   color: var(--text);
   font-weight: bold;
 }
@@ -121,15 +122,15 @@ h2 {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 15px;
-  margin-top: 20px;
+  gap: 0.9375rem;
+  margin-top: 1.25rem;
 }
 
 .flashcard {
-  width: 200px;
-  height: 100px;
+  width: 12.5rem;
+  height: 6.25rem;
   background: var(--primary-light);
-  perspective: 1000px;
+  perspective: 62.5rem;
 }
 
 .flashcard-inner {
@@ -159,7 +160,7 @@ h2 {
   font-size: 1.5rem;
   font-weight: bold;
   border: 2px solid var(--border);
-  border-radius: 6px;
+  border-radius: 0.375rem;
 }
 
 .flashcard-front {
@@ -176,26 +177,26 @@ h2 {
 #loading-message {
   font-size: 1.2rem;
   color: var(--white);
-  margin-top: 20px;
+  margin-top: 1.25rem;
   display: none;
 }
 
 .navigation-buttons {
   display: flex;
   justify-content: center;
-  gap: 10px;
-  margin-top: 20px;
+  gap: 0.625rem;
+  margin-top: 1.25rem;
 }
 
 button {
   background-color: var(--primary-dark);
   color: var(--white);
   border: none;
-  padding: 12px 20px;
+  padding: 0.75rem 1.25rem;
   font-size: 1rem;
   font-weight: bold;
   cursor: pointer;
-  border-radius: 6px;
+  border-radius: 0.375rem;
   transition: all 0.3s;
 }
 
@@ -212,8 +213,8 @@ button:disabled {
 
 .theme-switch {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 1.25rem;
+  right: 1.25rem;
   z-index: 1000;
 }
 
@@ -223,18 +224,18 @@ button:disabled {
 
 .theme-switch label {
   cursor: pointer;
-  padding: 10px;
+  padding: 0.625rem;
   background: var(--primary);
   color: var(--white);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 2.5rem;
+  height: 2.5rem;
   box-shadow: var(--shadow);
   transition: all 0.3s;
-  font-size: 18px;
+  font-size: 1.125rem;
 }
 
 .theme-switch label:hover {
@@ -246,24 +247,24 @@ button:disabled {
   body {
     height: auto;
     min-height: 100vh;
-    padding: 15px;
+    padding: 0.9375rem;
     align-items: flex-start;
   }
 
   .flashcards {
     width: 100%;
-    padding: 15px;
-    margin-top: 20px;
+    padding: 0.9375rem;
+    margin-top: 1.25rem;
   }
 
   h2 {
     font-size: 1.5rem;
-    margin-bottom: 15px;
+    margin-bottom: 0.9375rem;
   }
 
   .flashcard {
-    width: 150px;
-    height: 80px;
+    width: 9.375rem;
+    height: 5rem;
   }
 
   .flashcard-front,
@@ -273,28 +274,39 @@ button:disabled {
 
   .navigation-buttons {
     flex-direction: column;
-    gap: 8px;
+    gap: 0.5rem;
   }
 
   button {
     width: 100%;
-    padding: 10px;
+    padding: 0.625rem;
   }
 
   select {
     max-width: 100%;
   }
 }
-
-@media (min-width: 576px) and (max-width: 767.98px) {
+@media (max-width: 575.98px) and (orientation: landscape) {
   .flashcards {
-    width: 95%;
-    padding: 20px;
+    max-height: 90vh;
+    overflow-y: auto;
   }
 
   .flashcard {
-    width: 160px;
-    height: 90px;
+    width: 7.5rem;
+    height: 4.375rem;
+  }
+}
+
+@media (min-width: 576px) {
+  .flashcards {
+    width: 95%;
+    padding: 1.25rem;
+  }
+
+  .flashcard {
+    width: 10rem;
+    height: 5.625rem;
   }
 
   .flashcard-front,
@@ -303,54 +315,77 @@ button:disabled {
   }
 }
 
-@media (min-width: 768px) and (max-width: 991.98px) {
+@media (min-width: 576px) and (max-width: 767.98px) and (orientation: portrait) {
   .flashcards {
-    width: 90%;
+    padding: 1.5625rem;
   }
 
-  .flashcard {
-    width: 180px;
-    height: 100px;
+  h2 {
+    font-size: 1.8rem;
   }
 }
 
-@media (orientation: landscape) and (max-width: 991.98px) {
-  body {
-    padding: 10px;
+@media (min-width: 768px) {
+  .flashcards {
+    width: 90%;
+    padding: 1.5625rem;
   }
 
+  .flashcard {
+    width: 11.25rem;
+    height: 6.25rem;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) and (orientation: landscape) {
   .flashcards {
     max-height: 90vh;
     overflow-y: auto;
   }
 
   .flashcard-container {
-    gap: 10px;
+    gap: 0.75rem;
   }
+}
 
-  .flashcard {
-    width: 150px;
-    height: 80px;
+@media (min-width: 992px) {
+  .flashcards {
+    width: 85%;
+    padding: 1.875rem;
+  }
+}
+
+@media (min-width: 1200px) {
+  .flashcards {
+    width: 80%;
+    max-width: 62.5rem;
   }
 }
 
 @media (max-height: 600px) {
   .flashcards {
-    padding: 15px;
+    padding: 0.9375rem;
   }
 
   h2 {
     font-size: 1.3rem;
-    margin-bottom: 10px;
+    margin-bottom: 0.625rem;
   }
 
   .flashcard {
-    width: 140px;
-    height: 70px;
+    width: 8.75rem;
+    height: 4.375rem;
   }
 
   .flashcard-front,
   .flashcard-back {
     font-size: 1rem;
+  }
+}
+
+@media (min-height: 1000px) {
+  .flashcards {
+    margin-top: 5vh;
+    margin-bottom: 5vh;
   }
 }

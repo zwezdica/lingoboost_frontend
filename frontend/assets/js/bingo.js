@@ -13,6 +13,7 @@ const LANGUAGES = [
 
 let score = 0;
 let currentWord = null;
+let selectedLanguage = localStorage.getItem("selectedLanguage") || "fr";
 
 document.addEventListener("DOMContentLoaded", () => {
   initializeUI();
@@ -50,6 +51,13 @@ function setupEventListeners() {
     .getElementById("theme-toggle")
     ?.addEventListener("change", toggleTheme);
 
+  document
+    .getElementById("language-selector")
+    ?.addEventListener("change", (e) => {
+      selectedLanguage = e.target.value;
+      localStorage.setItem("selectedLanguage", selectedLanguage);
+    });
+
   window.addEventListener("click", (event) => {
     if (event.target === document.getElementById("modal")) {
       document.getElementById("modal").style.display = "none";
@@ -62,6 +70,16 @@ function setupEventListeners() {
 
 function initializeUI() {
   const app = document.getElementById("app");
+
+  const iconContainer = document.createElement("div");
+  iconContainer.className = "icon-container";
+  iconContainer.innerHTML = `
+     <svg viewBox="0 0 24 24" width="24" height="24">
+  <path fill="currentColor" d="M20 2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h14l4 4V4c0-1.1-.9-2-2-2zm-2 12H6v-2h12v2zm0-3H6V9h12v2zm0-3H6V6h12v2z"/>
+</svg>
+  `;
+  iconContainer.style.display = "none";
+  app.appendChild(iconContainer);
 
   app.appendChild(createThemeToggle());
 
@@ -76,9 +94,14 @@ function initializeUI() {
     createSelector("level-selector", "Choose difficulty:", DIFFICULTIES)
   );
 
-  selectorContainer.appendChild(
-    createSelector("language-selector", "Choose language:", LANGUAGES)
+  const languageSelector = createSelector(
+    "language-selector",
+    "Choose language:",
+    LANGUAGES
   );
+
+  languageSelector.querySelector("select").value = selectedLanguage;
+  selectorContainer.appendChild(languageSelector);
 
   const startButton = document.createElement("button");
   startButton.id = "start-button";
@@ -171,8 +194,12 @@ function createTranslationModal() {
 
 async function startGame() {
   const level = document.getElementById("level-selector").value;
+  const language = document.getElementById("language-selector").value;
+
   try {
-    const response = await fetch(`${API_URL}/words?level=${level}`);
+    const response = await fetch(
+      `${API_URL}/words?level=${level}&language=${language}`
+    );
     if (!response.ok) throw new Error("Error fetching words");
 
     const { words } = await response.json();
@@ -275,6 +302,7 @@ async function checkTranslation(word, userTranslation) {
     );
   }
 }
+
 function initializeDarkMode() {
   const themeToggle = document.getElementById("theme-toggle");
   const themeLabel = document.querySelector(".theme-switch label");

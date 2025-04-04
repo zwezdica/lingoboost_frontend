@@ -3,8 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-       <title>Bingo</title>
-    <link rel="stylesheet" href="./assets/css/bingo.css"/>
+
+    <title>Bingo</title>
+
+    <link rel="stylesheet" href="./assets/css/bingo.css?v=<?=time()?>" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -16,13 +19,13 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
+
+    <link rel="icon" href="data:image/svg+xml" />
   </head>
-    
- 
-  </head>
+
   <body>
     <div id="app"></div>
 
-    <script src="./assets/js/bingo.js"></script>
+    <script src="./assets/js/bingo.js?v=<?=time()?>"></script>
   </body>
 </html>

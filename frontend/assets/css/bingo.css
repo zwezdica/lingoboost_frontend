@@ -17,7 +17,8 @@
   --bg-secondary: #fbc16b;
   --border: #e8d5b5;
   --white: #ffffff;
-  --shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  --shadow: 0 0.375rem 0.75rem rgba(0, 0, 0, 0.15);
+  --input-text: #4d3e2f;
 
   --dark-primary: #8c6b4f;
   --dark-primary-light: #2f2112;
@@ -29,6 +30,7 @@
   --dark-bg: linear-gradient(135deg, #2a2118, #3a2e21);
   --dark-bg-secondary: #3a2e21;
   --dark-border: #5a4a3a;
+  --input-text: #f67f09;
 }
 
 [data-theme="dark"] {
@@ -42,13 +44,18 @@
   --bg: var(--dark-bg);
   --bg-secondary: var(--dark-bg-secondary);
   --border: var(--dark-border);
+  --input-text: var(--text);
+}
+
+html {
+  font-size: 16px;
 }
 
 body {
   background: var(--primary-light);
   color: var(--text);
   text-align: center;
-  padding: 0 20px;
+  padding: 0 1.25rem;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -59,11 +66,11 @@ body {
 }
 
 .container {
-  max-width: 500px;
-  margin: 50px auto;
+  max-width: 31.25rem;
+  margin: 3.125rem auto;
   background: var(--bg-secondary);
-  padding: 25px;
-  border-radius: 10px;
+  padding: 1.5625rem;
+  border-radius: 0.625rem;
   box-shadow: var(--shadow);
   transition: transform 0.3s ease-in-out;
   border: 1px solid var(--border);
@@ -75,15 +82,15 @@ body {
 
 h1 {
   color: var(--text);
-  font-size: 40px;
+  font-size: 2.5rem;
   font-weight: bold;
-  margin-bottom: 20px;
+  margin-bottom: 1.25rem;
 }
 
 .selector-container {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 0.9375rem;
   align-items: center;
 }
 
@@ -92,18 +99,18 @@ h1 {
   flex-direction: column;
   font-size: 1rem;
   font-weight: bold;
-  gap: 5px;
+  gap: 0.3125rem;
   width: 100%;
-  max-width: 300px;
+  max-width: 18.75rem;
 }
 
 select {
-  padding: 10px;
-  font-size: 16px;
+  padding: 0.625rem;
+  font-size: 1rem;
   text-align: center;
   font-weight: bold;
-  border: 2px solid var(--primary);
-  border-radius: 6px;
+  border: 0.125rem solid var(--primary);
+  border-radius: 0.375rem;
   background-color: var(--primary-dark);
   color: var(--white);
   cursor: pointer;
@@ -117,17 +124,17 @@ select:focus {
 }
 
 #start-button {
-  padding: 12px 20px;
-  font-size: 16px;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
   background-color: var(--primary);
   color: var(--white);
   border: none;
-  border-radius: 6px;
+  border-radius: 0.375rem;
   font-weight: bold;
   cursor: pointer;
   transition: background 0.3s, transform 0.2s;
   width: 100%;
-  max-width: 300px;
+  max-width: 18.75rem;
 }
 
 #start-button:hover {
@@ -138,18 +145,18 @@ select:focus {
 
 #bingo-table {
   border-collapse: collapse;
-  margin: 30px auto;
+  margin: 1.875rem auto;
   background: var(--primary-light);
   box-shadow: var(--shadow);
-  border-radius: 10px;
+  border-radius: 0.625rem;
   overflow: hidden;
 }
 
 #bingo-table td {
-  padding: 40px;
+  padding: 2.5rem;
   text-align: center;
   cursor: pointer;
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: bold;
   color: var(--text);
   background: var(--primary-light);
@@ -162,10 +169,10 @@ select:focus {
 }
 
 #score {
-  font-size: 24px;
+  font-size: 1.5rem;
   font-weight: bold;
   color: var(--text-light);
-  margin: 20px 0;
+  margin: 1.25rem 0;
 }
 
 #modal {
@@ -182,19 +189,24 @@ select:focus {
 .modal-content {
   background-color: var(--bg-secondary);
   margin: 15% auto;
-  padding: 25px;
-  border: 2px solid var(--primary);
+  padding: 1.5625rem;
+  border: 0.125rem solid var(--primary);
   width: 80%;
-  max-width: 500px;
+  max-width: 31.25rem;
   text-align: center;
-  border-radius: 10px;
+  border-radius: 0.625rem;
   box-shadow: var(--shadow);
+}
+
+.modal-content input {
+  color: var(--input-text);
+  font-weight: bold;
 }
 
 #close-modal {
   float: right;
   cursor: pointer;
-  font-size: 24px;
+  font-size: 1.5rem;
   color: var(--primary);
   transition: color 0.3s;
 }
@@ -205,14 +217,14 @@ select:focus {
 
 #back-to-home,
 #submit-translation {
-  padding: 12px 20px;
-  font-size: 16px;
+  padding: 0.75rem 1.25rem;
+  font-size: 1rem;
   cursor: pointer;
-  margin: 20px;
+  margin: 1.25rem;
   background-color: var(--primary);
   color: var(--white);
   border: none;
-  border-radius: 6px;
+  border-radius: 0.375rem;
   font-weight: bold;
   transition: background 0.3s, transform 0.2s;
 }
@@ -225,14 +237,14 @@ select:focus {
 
 #back-to-home {
   position: relative;
-  margin-top: 20px;
+  margin-top: 1.25rem;
   text-align: center;
   width: auto;
-  padding: 12px 20px;
+  padding: 0.75rem 1.25rem;
   background-color: var(--primary);
   color: var(--white);
   border: none;
-  border-radius: 6px;
+  border-radius: 0.375rem;
   font-weight: bold;
   cursor: pointer;
   transition: background 0.3s, transform 0.2s;
@@ -258,21 +270,21 @@ select:focus {
 #translation-modal .modal-content {
   background-color: var(--bg-secondary);
   margin: 15% auto;
-  padding: 20px;
-  border: 2px solid var(--primary);
+  padding: 1.25rem;
+  border: 0.125rem solid var(--primary);
   width: 80%;
-  max-width: 500px;
+  max-width: 31.25rem;
   text-align: center;
-  border-radius: 10px;
+  border-radius: 0.625rem;
 }
 
 #translation-input {
   width: 100%;
-  padding: 12px;
-  margin: 10px 0;
-  font-size: 16px;
-  border: 2px solid var(--primary);
-  border-radius: 6px;
+  padding: 0.75rem;
+  margin: 0.625rem 0;
+  font-size: 1rem;
+  border: 0.125rem solid var(--primary);
+  border-radius: 0.375rem;
   background: var(--bg);
   transition: border-color 0.3s;
 }
@@ -284,8 +296,8 @@ select:focus {
 
 .theme-switch {
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 1.25rem;
+  right: 1.25rem;
   z-index: 100;
 }
 
@@ -295,13 +307,13 @@ select:focus {
 
 .theme-switch label {
   cursor: pointer;
-  padding: 8px;
-  background: var(--bg-secondary);
+  padding: 0.5rem;
+  background: var(--primary-dark);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 0.3125rem rgba(0, 0, 0, 0.2);
   transition: all 0.3s;
 }
 
@@ -309,83 +321,59 @@ select:focus {
   transform: scale(1.1);
 }
 
-@media (max-width: 575.98px) {
-  body {
-    padding: 10px;
-  }
-
-  .container {
-    width: 100%;
-    padding: 20px;
-    margin: 20px auto;
-  }
-
-  h1 {
-    font-size: 28px;
-  }
-
-  #bingo-table td {
-    padding: 20px;
-    font-size: 18px;
-  }
-
-  .selector-item,
-  #start-button,
-  #back-to-home {
-    max-width: 100%;
-  }
-
-  .modal-content {
-    width: 95%;
-    margin: 10% auto;
-    padding: 15px;
-  }
+.container {
+  width: 100%;
+  padding: 0.625rem;
+  margin: 0;
 }
 
-@media (min-width: 576px) and (max-width: 767.98px) {
+#bingo-table td {
+  padding: 0.5rem;
+  font-size: 0.75rem;
+  height: 3.125rem;
+}
+
+@media (max-width: 575.98px) {
   .container {
     width: 90%;
   }
-
   #bingo-table td {
-    padding: 25px;
+    padding: 0.75rem;
+    font-size: 1rem;
   }
 }
 
-@media (min-width: 768px) and (max-width: 991.98px) {
+@media (min-width: 768px) {
   .container {
     width: 80%;
   }
-}
-
-@media (orientation: landscape) and (max-width: 991.98px) {
-  body {
-    padding: 10px;
-  }
-
-  .container {
-    max-height: 90vh;
-    overflow-y: auto;
-  }
-
   #bingo-table td {
-    padding: 15px;
+    padding: 1.25rem;
+    font-size: 1.125rem;
   }
 }
 
-@media (max-height: 600px) {
+@media (min-width: 992px) {
   .container {
-    padding: 15px;
-    margin: 10px auto;
+    width: 70%;
   }
+}
 
-  h1 {
-    font-size: 24px;
-    margin-bottom: 10px;
+@media (min-width: 1200px) {
+  .container {
+    width: 60%;
   }
+}
 
+@media (max-width: 575px) and (orientation: portrait) {
   #bingo-table td {
-    padding: 10px;
-    font-size: 16px;
+    word-break: break-word;
+  }
+}
+
+@media (max-width: 575px) and (orientation: landscape) {
+  #bingo-table td {
+    padding: 0.3125rem;
+    font-size: 0.625rem;
   }
 }
