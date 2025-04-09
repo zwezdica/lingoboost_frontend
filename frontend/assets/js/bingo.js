@@ -286,7 +286,7 @@ async function checkTranslation(word, userTranslation) {
         "Correct!",
         `The correct translation is: ${correctTranslation}`
       );
-      score += 10;
+      score += 10; // Povećanje skora za svaku pogodjenu reč
       document.getElementById("score").textContent = `Score: ${score}`;
     } else {
       showModal(

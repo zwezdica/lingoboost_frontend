@@ -698,7 +698,6 @@ form button:hover {
   transform: translateY(-0.1875rem);
 }
 
-
 .footer-content {
   max-width: 1200px;
   margin: 0 auto;
@@ -881,18 +880,13 @@ form button:hover {
   gap: 1.25rem;
 }
 
-form,
-#contactForm {
-  max-width: 80%;
-}
-
 .testimonial-slide {
   padding: 1.25rem;
 }
 
 @media (orientation: landscape) {
   .video-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 
   .testimonial-carousel {
@@ -902,7 +896,7 @@ form,
 
 @media (min-width: 768px) and (max-width: 991.98px) {
   .video-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
   }
 

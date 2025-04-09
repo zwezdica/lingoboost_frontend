@@ -178,7 +178,7 @@ async function handleGuess() {
   if (!letter) return;
 
   try {
-    const response = await fetch(`${API_URL}/guess`, {
+    const response = await fetch(`${API_URL}/guess/${letter}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
