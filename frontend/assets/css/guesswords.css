@@ -62,7 +62,7 @@ body {
   background: var(--primary-light);
   padding: 0.625rem 0.9375rem;
   border-radius: 0.9375rem;
-  box-shadow: var(--shadow);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
   border: 1px solid var(--border);
 }
 
@@ -181,7 +181,7 @@ button {
 }
 
 button:hover {
-  background-color: var(--bg);
+  background-color: var(--primary-light);
   color: var(--text);
   transform: translateY(-0.125rem);
 }

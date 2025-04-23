@@ -95,7 +95,7 @@ body {
   background: var(--bg);
   padding: 1.875rem 2.5rem;
   border-radius: 0.75rem;
-  box-shadow: var(--shadow);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.08);
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -168,7 +168,7 @@ select {
   font-size: 1.125rem;
   font-weight: bold;
   background-color: var(--bg-secondary);
-  box-shadow: var(--shadow);
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.08);
 }
 
 #backToHomeButton {

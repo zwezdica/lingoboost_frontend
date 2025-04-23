@@ -53,10 +53,10 @@ body {
 }
 
 .flashcards {
-  background-color: var(--bg);
+  background-color: #fef3c7;
   border-radius: 0.75rem;
   padding: 1.25rem;
-  box-shadow: var(--shadow);
+  box-shadow: 0 0.375rem 0.75rem rgba(0, 0, 0, 0.15);
   width: 90%;
   max-width: 56.25rem;
   text-align: center;
@@ -233,7 +233,7 @@ button:disabled {
   justify-content: center;
   width: 2.5rem;
   height: 2.5rem;
-  box-shadow: var(--shadow);
+  box-shadow: 0 0.375rem 0.75rem rgba(0, 0, 0, 0.15);
   transition: all 0.3s;
   font-size: 1.125rem;
 }
