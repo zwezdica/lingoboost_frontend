@@ -123,7 +123,8 @@ lingoboost/
 - 📝 Language quizzes
   <p align="center">
   <img src="screenshots/quiz_dark.png" alt="Quiz Module Dark Mode" width="45%">
-  <img src="screenshots/quiz_light.png" alt="Quiz Module Light Mode" width="45%">
+  <img src="screenshots/quiz_light.png" alt="Quiz Module Light Mode" width="45%">    
+      <br>
   <em>Language quiz interface in both color modes</em>
 </p>
 
@@ -134,7 +135,8 @@ lingoboost/
 
 <p align="center">
   <img src="screenshots/dictionary_dark.png" alt="Dictionary Feature Dark Mode" width="45%">
-  <img src="screenshots/dictionary_light.png" alt="Dictionary Feature Light Mode" width="45%">
+  <img src="screenshots/dictionary_light.png" alt="Dictionary Feature Light Mode" width="45%">  
+    <br>
   <em>Dictionary search results comparison</em>
 </p>
 
@@ -144,7 +146,8 @@ lingoboost/
 
   <p align="center">
   <img src="screenshots/register_dark.png" alt="Registration Form Dark Mode" width="45%">
-  <img src="screenshots/register_light.png" alt="Registration Form Light Mode" width="45%">
+  <img src="screenshots/register_light.png" alt="Registration Form Light Mode" width="45%">   
+      <br>
   <em>User registration form with password requirements</em>
 </p>
 
