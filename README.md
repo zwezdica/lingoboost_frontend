@@ -4,6 +4,13 @@
 
 LingoBoost is a modern web application that makes language learning fun and engaging through gamified experiences. It offers various interactive modules to help users master vocabulary in multiple languages.
 
+
+<p align="center">
+  <img src="screenshots/home_dark.png" alt="LingoBoost Homepage Dark Mode" width="45%">
+  <img src="screenshots/home_light.png" alt="LingoBoost Homepage Light Mode" width="45%">
+</p>
+
+
 ---
 
 ## 🛠️ Technology Stack
@@ -114,18 +121,34 @@ lingoboost/
 - 🔤 Digital flashcards
 - ❓ Word guessing challenges
 - 📝 Language quizzes
+  <p align="center">
+  <img src="screenshots/quiz_dark.png" alt="Quiz Module Dark Mode" width="45%">
+  <img src="screenshots/quiz_light.png" alt="Quiz Module Light Mode" width="45%">
+  <em>Language quiz interface in both color modes</em>
+</p>
+
 
 ### 📚 Comprehensive Dictionary
 - 🔍 Word search functionality
-- 🔊 Pronunciation guides
-- 📝 Example sentences
 - 🌐 Multiple language support
+
+<p align="center">
+  <img src="screenshots/dictionary_dark.png" alt="Dictionary Feature Dark Mode" width="45%">
+  <img src="screenshots/dictionary_light.png" alt="Dictionary Feature Light Mode" width="45%">
+  <em>Dictionary search results comparison</em>
+</p>
 
 ### 👤 User System
 - 🔐 Secure authentication
-- 📊 Progress tracking
 - ⚙️ Admin dashboard
-- 
+
+  <p align="center">
+  <img src="screenshots/register_dark.png" alt="Registration Form Dark Mode" width="45%">
+  <img src="screenshots/register_light.png" alt="Registration Form Light Mode" width="45%">
+  <em>User registration form with password requirements</em>
+</p>
+
+
 ## ➕ Additional Features
 - 🌙 Dark/light mode toggle
 
