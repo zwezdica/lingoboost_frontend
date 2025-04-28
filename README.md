@@ -47,6 +47,40 @@ LingoBoost is a modern web application that makes language learning fun and enga
 ✔ Modern web browser (Chrome, Firefox, Edge, Safari)  
 ✔ Internet connection (for API access)
 
+
+
+## 🚨 Important Setup Order
+Backend server MUST be running before the frontend application!
+
+### Backend Setup
+1. Clone the backend repository:
+
+```bash
+git clone https://github.com/zwezdica/lingoboost_backend.git
+cd lingoboost_backend
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+```
+
+3. Configure environment variables:
+Create a .env file based on .env.example and fill in your:
+```bash
+MongoDB connection string
+JWT secret key
+Email service credentials (if using)
+```
+
+4. Start the backend server:
+```bash
+npm start
+Server will run on http://localhost:5001 (or your configured port)
+```
+
+
 ### Running Locally
 
 1. **Clone the repository**:
